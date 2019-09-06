@@ -1,3 +1,5 @@
+import {Resource} from "./resource";
+
 class ProgrammingLanguage implements Resource {
     id: number;
     name: string;
