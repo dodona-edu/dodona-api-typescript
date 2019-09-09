@@ -33,7 +33,7 @@ class SubmissionStatus {
 	 * @param name the name to find
 	 * @return the submission status to find
 	 */
-	public byName(name:string) : SubmissionStatus {
+	public byName(name:string) : SubmissionStatusEnum {
 		let matches:string[] = Object.keys(SubmissionStatusEnum).filter(key => (SubmissionStatusEnum[key] === name));
 		if (matches.length === 1){
 			return SubmissionStatusEnum[matches[0]];

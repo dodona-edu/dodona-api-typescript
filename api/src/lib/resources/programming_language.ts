@@ -1,6 +1,6 @@
 import {Resource} from "./resource";
 
-class ProgrammingLanguage implements Resource {
+export class ProgrammingLanguage implements Resource {
     id: number;
     name: string;
     extension: string;

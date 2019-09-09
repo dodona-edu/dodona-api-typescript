@@ -1,4 +1,5 @@
 import {Resource} from "./resource";
+import {compare} from "./helperfunctions"
 
 /**
  * A submission on Dodona.
@@ -50,13 +51,7 @@ class Submission implements Resource{
 	}
 	
 	public compareTo(o :Submission) : number{
-		if (this.createdAt === (o.getCreatedAt())){
-            return 0;
-        } else if (this.createdAt < (o.getCreatedAt())){
-            return -1;
-        } else {
-            return 1;
-        }
+		return compare(this.createdAt, o.getCreatedAt());
 	}
 	
 	public getCode() : string {
