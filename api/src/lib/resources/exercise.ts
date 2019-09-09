@@ -1,6 +1,6 @@
 import {Resource} from "./resource";
 import {ProgrammingLanguage} from "./programming_language";
-import {ExerciseStatus, ExerciseStatusEnum} from "./exercise_status"
+import {ExerciseStatus} from "../data/exercise_status"
 import {compare} from "./helperfunctions";
 
 /**

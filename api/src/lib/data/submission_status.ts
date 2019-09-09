@@ -1,4 +1,3 @@
-
 enum SubmissionStatusEnum {
     COMPILATION_ERROR = "compilation error",
 	CORRECT = "correct",
