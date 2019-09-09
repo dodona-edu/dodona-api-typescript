@@ -1,4 +1,4 @@
-enum ExerciseStatusEnum {
+export enum ExerciseStatusEnum {
     /**
 	 * The exercise is correct.
 	 */
