@@ -1,7 +1,7 @@
 /**
  * The color of a course.
  */
-enum CourseColorEnum {
+export enum CourseColorEnum {
 	BLUE_GREY = <any> ["blue-grey", "#607D8B"],
 	BROWN = <any> ["brown", "#795548"],
 	DEEP_PURPLE = <any> ["deep-purple", "#673AB7"],
