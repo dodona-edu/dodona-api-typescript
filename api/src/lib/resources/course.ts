@@ -1,10 +1,11 @@
 import { compare } from "./helperfunctions";
+import { CourseColorEnum } from "../data/course_color";
 
 /**
  * A course on Dodona.
  */
 export class Course {
-	private readonly color :CourseColor;
+	private readonly color :CourseColorEnum;
 	private readonly id :number;
 	private readonly name :string;
 	private readonly seriesUrl :string;
@@ -25,13 +26,13 @@ export class Course {
 	 * @param url       the url
 	 * @param year      the academic year
 	 */
-	constructor(color :CourseColor,
-	                  id :number,
-	                  name :string,
-	                  seriesUrl :string,
-	                  teacher :string,
-	                  url :string,
-	                  year :string) {
+	constructor(color :CourseColorEnum,
+				id :number,
+				name :string,
+				seriesUrl :string,
+				teacher :string,
+				url :string,
+	            year :string) {
 		this.color = color;
 		this.id = id;
 		this.name = name;
@@ -46,7 +47,7 @@ export class Course {
 		return compareYear != 0 ? compareYear : compare<string>(this.name.toLowerCase(), o.getName().toLowerCase());
 	}
 	
-	public getColor() :CourseColor {
+	public getColor() :CourseColorEnum {
 		return this.color;
 	}
 	
