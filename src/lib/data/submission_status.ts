@@ -13,7 +13,7 @@ enum SubmissionStatusEnum {
 /**
  * The status of a submission.
  */
-class SubmissionStatus {
+export class SubmissionStatus {
 
 	public name: string;
 
