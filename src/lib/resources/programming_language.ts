@@ -2,15 +2,6 @@ import {Resource} from "./resource";
 
 export class ProgrammingLanguage implements Resource {
 
-    public static fromJson(json: string): ProgrammingLanguage {
-        const parsed = JSON.parse(json, function(key, value) {
-            if (key == "id") {
-                return Number.parseInt(value);
-            }
-            return value;
-        });
-        return new ProgrammingLanguage(parsed.id, parsed.name, parsed.extension);
-    }
     public id: number;
     public name: string;
     public extension: string;
@@ -19,6 +10,18 @@ export class ProgrammingLanguage implements Resource {
         this.id = id;
         this.name = name;
         this.extension = extension;
+    }
+
+    public static fromJson(json: string): ProgrammingLanguage {
+        const parsed = JSON.parse(json, ProgrammingLanguage.reviver);
+        return new ProgrammingLanguage(parsed.id, parsed.name, parsed.extension);
+    }
+    
+    static reviver(key :string, value :any) :any{
+        if (key == "id") {
+            return Number.parseInt(value);
+        }
+        return value;
     }
 
     public getId(): number {

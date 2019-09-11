@@ -2,11 +2,13 @@ import {ExerciseStatus, ExerciseStatusEnum} from "../data/exercise_status";
 import {compare} from "./helperfunctions";
 import {ProgrammingLanguage} from "./programming_language";
 import {Resource} from "./resource";
+import { parse } from "@babel/core";
+import { booleanLiteral } from "@babel/types";
 
 /**
  * A exercise on Dodona.
  */
-export class Exercise /* implements Resource */ {
+export class Exercise implements Resource{
 	private readonly boilerplate: string;
 
 	private readonly has_correct_solution: boolean;
@@ -111,5 +113,42 @@ export class Exercise /* implements Resource */ {
 
 	public toString(): string {
 		return `Exercise{id=${this.id}, name=${this.name}, status=${this.status}}]`;
+	}
+
+	/**
+	 * Parses the id of an exercise from the url.
+	 *
+	 * @param url the url to the exercise
+	 * @return the exercise id
+	 */
+	static getId(url :string) :number|null {
+		let pattern :RegExp = new RegExp("exercises/([0-9]+)");
+		return Number.parseInt(url.match(pattern)[1]);
+	}
+
+	static fromJSON(json: string): Exercise {
+		const parsed =  JSON.parse(json, Exercise.reviver);
+		return new Exercise(parsed.boilerplate, 
+							parsed.description,
+							parsed.description_format,
+							parsed.has_correct_solution,
+							parsed.has_solution,
+							parsed.id,
+							parsed.last_solution_is_best,
+							parsed.name,
+							parsed.programming_language,
+							parsed.url
+							);
+	}
+
+	static reviver(key: string, value: any): any {
+		if (key === "programming_language"){
+			return ProgrammingLanguage.fromJson(value);
+		} else if (key === "has_correct_solution" || key === "has_solution"){
+			return value === "true";
+		} else if (key === "id"){
+			return Number.parseInt(value);
+		}
+		return value;
 	}
 }
