@@ -50,8 +50,8 @@ export abstract class AbstractManager<T extends Resource> {
 			.resolve();
 	}*/
 
-	public get(url :string) :T {
-		return this.get(url/*, this.impl*/);
+	public get(url :string) :Promise<Response> {
+		return this.http.get(url/*, this.impl*/);
 	}
 
 	/**
