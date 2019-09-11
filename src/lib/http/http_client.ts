@@ -32,7 +32,7 @@ export class HttpClient<T> {
 		return this;
 	}
 
-	public get(url: string): Promise<T[]> {
+	public get(url: string): Promise<Response> {
 		return fetch(url, {
 			method: "GET", // *GET, POST, PUT, DELETE, etc.
 			// mode: 'cors', // no-cors, cors, *same-origin
@@ -49,7 +49,7 @@ export class HttpClient<T> {
 		}).then(resp => this.handleresp(resp));
 	}
 
-	public  post(url: string, body: any): Promise<T[]> {
+	public  post(url: string, body: any): Promise<Response> {
 		return fetch(url, {
 			method: "POST", // *GET, POST, PUT, DELETE, etc.
 			// mode: 'cors', // no-cors, cors, *same-origin
@@ -77,7 +77,7 @@ export class HttpClient<T> {
 	 * @param url       the url
 	 * @return the response parsed as T
 	 */
-	private handleresp(response: Response): Promise<T[]> {
+	private handleresp(response: Response): Response{
 		try {
 			if (response.status === 401) {
 				if (this.authentication) {
@@ -95,7 +95,7 @@ export class HttpClient<T> {
 				throw HttpResponse.notFound();
 			}
 
-			return response.json();
+			return response;
 		} catch (error) {
 			throw new Error(error);
 		}
