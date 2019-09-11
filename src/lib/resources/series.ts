@@ -1,7 +1,7 @@
 /**
  * A series on Dodona.
  */
-class Series {
+export class Series {
 	private readonly deadline: Date;
 
 	private readonly description: string;

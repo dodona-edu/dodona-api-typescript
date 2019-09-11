@@ -78,4 +78,15 @@ export class Course {
     public toString(): string {
 		return `Course{id=${this.id}, name=${this.name}}`;
 	}
+
+	/**
+	 * Parses the id of a course from the url.
+	 *
+	 * @param url the url to the course
+	 * @return the course id
+	 */
+	static getId(url :string) :number{
+		let pattern :RegExp = new RegExp("courses/([0-9]+)");
+		return Number.parseInt(url.match(pattern)[1]);
+	}
 }
