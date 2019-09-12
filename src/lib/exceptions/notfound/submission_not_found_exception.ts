@@ -3,7 +3,7 @@ import { ResourceNotFoundException } from "./resource_not_found_exception";
 /**
  * A submission that can not be found.
  */
-class SubmissionNotFoundException extends ResourceNotFoundException {
+export class SubmissionNotFoundException extends ResourceNotFoundException {
 	private readonly url: string;
 
 	/**

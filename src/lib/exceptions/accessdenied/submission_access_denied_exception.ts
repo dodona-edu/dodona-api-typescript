@@ -3,7 +3,7 @@ import { ResourceAccessDeniedException } from "./resource_access_denied_exceptio
 /**
  * A submission that may not be accessed.
  */
-class SubmissionAccessDeniedException extends ResourceAccessDeniedException {
+export class SubmissionAccessDeniedException extends ResourceAccessDeniedException {
 	private readonly url: string;
 
 	/**

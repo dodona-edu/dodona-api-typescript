@@ -3,7 +3,7 @@ import { ResourceNotFoundException } from "./resource_not_found_exception";
 /**
  * A course that can not be found.
  */
-class CourseNotFoundException extends ResourceNotFoundException {
+export class CourseNotFoundException extends ResourceNotFoundException {
 	private readonly url: string;
 
 	/**

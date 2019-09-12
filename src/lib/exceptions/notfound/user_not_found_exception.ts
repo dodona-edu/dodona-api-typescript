@@ -3,7 +3,7 @@ import { ResourceNotFoundException } from "./resource_not_found_exception";
 /**
  * A user that can not be found.
  */
-class UserNotFoundException extends ResourceNotFoundException {
+export class UserNotFoundException extends ResourceNotFoundException {
 	private readonly url: string;
 
 	/**

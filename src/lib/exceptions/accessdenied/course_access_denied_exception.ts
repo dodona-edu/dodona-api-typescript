@@ -3,7 +3,7 @@ import { ResourceAccessDeniedException } from "./resource_access_denied_exceptio
 /**
  * A course that may not be accessed.
  */
-class CourseAccessDeniedException extends ResourceAccessDeniedException {
+export class CourseAccessDeniedException extends ResourceAccessDeniedException {
 	private readonly url: string;
 
 	/**

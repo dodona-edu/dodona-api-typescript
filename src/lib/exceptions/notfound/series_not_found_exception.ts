@@ -3,7 +3,7 @@ import { ResourceNotFoundException } from "./resource_not_found_exception";
 /**
  * A series that can not be found.
  */
-class SeriesNotFoundException extends ResourceNotFoundException {
+export class SeriesNotFoundException extends ResourceNotFoundException {
 	private readonly url: string;
 
 	/**

@@ -3,7 +3,7 @@ import { ResourceAccessDeniedException } from "./resource_access_denied_exceptio
 /**
  * A series that may not be accessed.
  */
-class SeriesAccessDeniedException extends ResourceAccessDeniedException {
+export class SeriesAccessDeniedException extends ResourceAccessDeniedException {
 	private readonly url: string;
 
 	/**
