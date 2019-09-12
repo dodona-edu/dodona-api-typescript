@@ -10,7 +10,7 @@ import { Course } from "../resources/course";
 /**
  * Implementation of ExerciseManager.
  */
-class ExerciseManager extends AbstractManager<Exercise> {
+export class ExerciseManager extends AbstractManager<Exercise> {
 	private static readonly ENDPOINT_EXERCISES :string = "/exercises";
 	private static readonly ENDPOINT_EXERCISES_ID :string = ExerciseManager.ENDPOINT_EXERCISES + "/${exerciseId}";
 
@@ -22,20 +22,22 @@ class ExerciseManager extends AbstractManager<Exercise> {
 	 * @param host the host
 	 * @param http the http client
 	 */
-	public constructor(host: string, http: HttpClient<Exercise>) {
+	public constructor(host: string, http: HttpClient) {
 		super(host, http, (url) => new ExerciseAccessDeniedException(url), (url) => new ExerciseNotFoundException(url));
 	}
 
-	public getAll(series :Series): Promise<Exercise[]> {
+	public getAll(series :Series): Promise<Exercise|Exercise[]> {
 		return this.parse(this.get(series.getExercisesUrl()));
 	}
 
 	public getExcerciseOfCourse(courseId :number, exerciseId :number): Promise<Exercise> {
-		return this.parse(this.get(this.url(`/courses/${courseId}/exercises/${exerciseId}`)))[0];
+		let result = this.parse(this.get(this.url(`/courses/${courseId}/exercises/${exerciseId}`)));
+		return result[0] || result; // In case the return value isn't an Array.
 	}
 
 	public getExcercise(exerciseId :number): Promise<Exercise> {
-		return this.parse(this.get(this.url(`exercises/${exerciseId}`)))[0];
+		let result = this.parse(this.get(this.url(`exercises/${exerciseId}`)));
+		return result[0] || result;
 	}
 
 	public getFromPartialSubmission(submission :PartialSubmission): Promise<Exercise> {
@@ -44,7 +46,7 @@ class ExerciseManager extends AbstractManager<Exercise> {
 		return this.getExcerciseOfCourse(courseId, exerciseId) || this.getExcercise(exerciseId);
 	}
 
-	private parse(resp_promise : Promise<Response>) : Promise<Exercise[]>{
+	private parse(resp_promise : Promise<Response>) : Promise<Exercise|Exercise[]>{
 		return resp_promise.then( resp => {
 			return resp.json();
 		}).then(json => {

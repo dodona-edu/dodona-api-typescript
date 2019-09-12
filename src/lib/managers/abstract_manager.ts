@@ -10,7 +10,7 @@ import { ResourceNotFoundException } from "../exceptions/notfound/resource_not_f
  */
 export abstract class AbstractManager<T extends Resource> {
 	private readonly host :string;
-	private readonly http :HttpClient<T>;
+	private readonly http :HttpClient;
 	// private readonly impl;
 
 	private readonly forbidden :(string) => ResourceAccessDeniedException;
@@ -24,7 +24,7 @@ export abstract class AbstractManager<T extends Resource> {
 	 * @param forbidden 403 exception
 	 * @param notFound  404 exception
 	 */
-	constructor(host: string, http: HttpClient<T>,
+	constructor(host: string, http: HttpClient,
 				/*Class<? extends T> impl,*/
 				forbidden :(string) => ResourceAccessDeniedException,
 				notFound :(string) => ResourceNotFoundException) {
@@ -62,5 +62,9 @@ export abstract class AbstractManager<T extends Resource> {
 	 */
 	url(endpoint :string) :string {
 		return this.host + endpoint;
+	}
+
+	post(url :string, request :any){
+		return this.http.post(url, request);
 	}
 }
