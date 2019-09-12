@@ -3,7 +3,7 @@ import { DodonaException } from "./dodonaexception";
 /**
  * A required submission status was not found.
  */
-class SubmissionStatusNotFoundException extends DodonaException {
+export class SubmissionStatusNotFoundException extends DodonaException {
 	private readonly status: string;
 
 	/**

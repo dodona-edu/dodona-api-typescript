@@ -1,3 +1,5 @@
+import { SubmissionStatusNotFoundException } from "../exceptions/submission_status_not_found_exception";
+
 export enum SubmissionStatusEnum {
     COMPILATION_ERROR = "compilation error",
 	CORRECT = "correct",
@@ -25,6 +27,13 @@ export class SubmissionStatus {
 	constructor(name: string) {
 		this.name = name;
 	}
+	
+	/**
+	 * Returns list of the CourseColorEnum keys.
+	 */
+	public static keys() :string[]{
+		return Object.keys(SubmissionStatusEnum).filter(key => key.toUpperCase() === key);
+	}
 
 	/**
 	 * Finds a SubmissionStatus given its name.
@@ -33,11 +42,11 @@ export class SubmissionStatus {
 	 * @return the submission status to find
 	 */
 	public static byName(name: string): SubmissionStatusEnum {
-		const matches: string[] = Object.keys(SubmissionStatusEnum).filter(key => (SubmissionStatusEnum[key] === name));
+		const matches: string[] = SubmissionStatus.keys().filter(key => (SubmissionStatusEnum[key] === name));
 		if (matches.length === 1) {
 			return SubmissionStatusEnum[matches[0]];
 		} else {
-			throw new Error(`SubmissionStatus with '${name}' not found`);
+			throw new SubmissionStatusNotFoundException(name);
 		}
 	}
 

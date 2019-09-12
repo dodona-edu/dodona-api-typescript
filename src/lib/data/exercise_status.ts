@@ -22,6 +22,12 @@ export enum ExerciseStatusEnum {
  * The status of an exercise.
  */
 export class ExerciseStatus {
+	/**
+	 * Returns list of the CourseColorEnum keys.
+	 */
+	public static keys() :string[]{
+		return Object.keys(ExerciseStatusEnum).filter(key => key.toUpperCase() === key);
+	}
 
 	/**
 	 * Finds an ExerciseStatus given the values of the exercise.
