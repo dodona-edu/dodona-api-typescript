@@ -3,7 +3,7 @@ import { AuthenticationException } from "../exceptions/authentication_exception"
 /**
  * Implementation of a HttpResponse.
  */
-export class HttpResponse<T> {
+export class HttpResponse<T> extends Response{
 
 	/**
 	 * Generates a forbidden HTTP/403 response.
@@ -63,6 +63,7 @@ export class HttpResponse<T> {
 	 * @param resolver the value resolver
 	 */
 	private constructor(resolver: (HttpResponse) => T) {
+		super();
 		this.resolver = resolver;
 		this.forbidden = new Error("Access denied.");
 		this.notFound = new Error("Not found.");
