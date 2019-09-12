@@ -20,7 +20,7 @@
     "Tobiah Lissens",
     "Winnie De Ridder"
   ],
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/dodona-edu/dodona-api-typescript/issues"
   },
