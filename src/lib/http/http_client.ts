@@ -4,7 +4,7 @@ import { HttpResponse } from "./http_response";
 /**
  * Implementation of a HttpClient.
  */
-export class HttpClient<T> {
+export class HttpClient {
 	private static readonly ACCEPT_HEADER: string = "Accept";
 	private static readonly ACCEPT_VALUE: string = "application/json";
 	private static readonly AUTHORIZATION_HEADER: string = "Authorization";
@@ -27,7 +27,7 @@ export class HttpClient<T> {
 		// this.mapper = mapper;
 	}
 
-	public authenticate(apiToken: string): HttpClient<T> {
+	public authenticate(apiToken: string): HttpClient {
 		this.authentication = apiToken;
 		return this;
 	}
@@ -66,7 +66,7 @@ export class HttpClient<T> {
 		}).then(resp => this.handleresp(resp));
 }
 
-	public setUserAgent(userAgent: string): HttpClient<T> {
+	public setUserAgent(userAgent: string): HttpClient {
 		this.userAgent = userAgent;
 		return this;
 	}
