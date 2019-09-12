@@ -1,0 +1,43 @@
+{
+  "name": "dodona-api-typescript",
+  "version": "1.0.0",
+  "description": "TypeScript bindings for the Dodona API.",
+  "main": "index.ts",
+  "dependencies": {
+    "@types/node": "^12.7.5",
+    "color": "^3.1.2",
+    "color-convert": "^2.0.1",
+    "color-name": "^1.1.4",
+    "color-string": "^1.5.3",
+    "tslint": "^5.20.0",
+    "typescript": "^3.6.3"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.2.0",
+    "@typescript-eslint/parser": "^2.2.0",
+    "eslint": "^6.3.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1"
+  },
+  "scripts": {
+    "lint": "tslint 'src/**/*.ts'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dodona-edu/dodona-api-typescript.git"
+  },
+  "author": "Lucianos Lionakis",
+  "contributors": [
+    "Pieter De Clercq",
+    "Tobiah Lissens",
+    "Winnie De Ridder"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dodona-edu/dodona-api-typescript/issues"
+  },
+  "homepage": "https://github.com/dodona-edu/dodona-api-typescript#readme"
+}
