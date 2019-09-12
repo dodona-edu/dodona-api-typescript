@@ -1,9 +1,7 @@
-import {ExerciseStatus, ExerciseStatusEnum} from "../data/exercise_status";
-import {compare} from "./helperfunctions";
-import {ProgrammingLanguage} from "./programming_language";
-import {Resource} from "./resource";
-import { parse } from "@babel/core";
-import { booleanLiteral } from "@babel/types";
+import { ExerciseStatus, ExerciseStatusEnum } from "../data/exercise_status";
+import { compare } from "./helperfunctions";
+import { ProgrammingLanguage, ProgrammingLanguageJSON } from "./programming_language";
+import { Resource } from "./resource";
 
 /**
  * A exercise on Dodona.
@@ -126,29 +124,37 @@ export class Exercise implements Resource{
 		return Number.parseInt(url.match(pattern)[1]);
 	}
 
-	static fromJSON(json: string): Exercise {
-		const parsed =  JSON.parse(json, Exercise.reviver);
-		return new Exercise(parsed.boilerplate, 
-							parsed.description,
-							parsed.description_format,
-							parsed.has_correct_solution,
-							parsed.has_solution,
-							parsed.id,
-							parsed.last_solution_is_best,
-							parsed.name,
-							parsed.programming_language,
-							parsed.url
+	static fromJSON(json: ExerciseJSON|string): Exercise {
+		if (typeof json === "string"){
+			return JSON.parse(json, Exercise.reviver);
+		}
+		return new Exercise(json.boilerplate, 
+							json.description,
+							json.description_format,
+							json.has_correct_solution === "true",
+							json.has_solution === "true",
+							json.id,
+							json.last_solution_is_best === "true",
+							json.name,
+							JSON.parse(json.programming_language, ProgrammingLanguage.reviver),
+							json.url
 							);
 	}
 
 	static reviver(key: string, value: any): any {
-		if (key === "programming_language"){
-			return ProgrammingLanguage.fromJson(value);
-		} else if (key === "has_correct_solution" || key === "has_solution"){
-			return value === "true";
-		} else if (key === "id"){
-			return Number.parseInt(value);
-		}
-		return value;
+		return key === "" ? Exercise.fromJSON(value) : value;
 	}
+}
+
+export interface ExerciseJSON{
+	boilerplate :string|null; 
+	description :string;
+	description_format :string;
+	has_correct_solution :string;
+	has_solution :string;
+	id :number;
+	last_solution_is_best :string;
+	name :string;
+	programming_language :string;
+	url :string;
 }

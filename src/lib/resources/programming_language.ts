@@ -12,16 +12,15 @@ export class ProgrammingLanguage implements Resource {
         this.extension = extension;
     }
 
-    public static fromJson(json: string): ProgrammingLanguage {
-        const parsed = JSON.parse(json, ProgrammingLanguage.reviver);
-        return new ProgrammingLanguage(parsed.id, parsed.name, parsed.extension);
+    public static fromJson(json: ProgrammingLanguageJSON|string): ProgrammingLanguage {
+        if (typeof json === "string"){
+            return JSON.parse(json, ProgrammingLanguage.reviver);
+        }
+        return new ProgrammingLanguage(json.id, json.name, json.extension);
     }
     
     static reviver(key :string, value :any) :any{
-        if (key == "id") {
-            return Number.parseInt(value);
-        }
-        return value;
+        return key === "" ? ProgrammingLanguage.fromJson(value) : value;
     }
 
     public getId(): number {
@@ -36,4 +35,10 @@ export class ProgrammingLanguage implements Resource {
 		return `ProgrammingLanguage{id=${this.id}, name=${this.name}}`;
 	}
 
+}
+
+export interface ProgrammingLanguageJSON{
+    id: number;
+    name: string;
+    extension: string;
 }

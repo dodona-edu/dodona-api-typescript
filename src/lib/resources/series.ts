@@ -73,4 +73,31 @@ export class Series {
 	public toString(): string {
 		return `Series{id=${this.id}, name=${this.name}}`;
 	}
+
+	static fromJSON(json :SeriesJSON|string) :Series{
+		if (typeof json === "string"){
+			return JSON.parse(json, Series.reviver);
+		}
+		return new Series(new Date(json.deadline),
+						  json.description,
+						  json.exercisesUrl,
+						  json.id,
+						  json.name,
+						  json.order,
+						  json.url);
+	}
+
+	static reviver(key :string, value :any) :any {
+		return key === "" ? Series.fromJSON(value) : value;
+	}
+}
+
+interface SeriesJSON{
+	deadline: string,
+	description: string,
+	exercisesUrl: string,
+	id: number,
+	name: string,
+	order: number,
+	url: string
 }

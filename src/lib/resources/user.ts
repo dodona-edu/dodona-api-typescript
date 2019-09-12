@@ -3,7 +3,7 @@ import { compare } from "./helperfunctions";
 /**
  * A user on Dodona.
  */
-class User {
+export class User {
 	private readonly correctExercises: number;
 	private readonly firstName: string;
 	private readonly id: number;
@@ -83,4 +83,33 @@ class User {
 	public tostring(): string {
 		return `User{id=${this.id}, firstName=${this.firstName}, lastName=${this.lastName}}`;
 	}
+	static fromJSON(json: ExerciseJSON|string): User {
+		if (typeof json === "string"){
+			return JSON.parse(json, User.reviver);
+		}
+		return new User(json.correctExercises, 
+						json.firstName,
+						json.id,
+						json.lastName,
+						json.submissionCount,
+						json.submissionsUrl,
+						JSON.parse(json.subscribedCourses, Course.reviver),
+						json.url,
+						);
+	}
+
+	static reviver(key: string, value: any): any {
+		return key === "" ? User.fromJSON(value) : value;
+	}
+}
+
+export interface ExerciseJSON{
+	correctExercises: number;
+	firstName: string;
+	id: number;
+	lastName: string;
+	submissionCount: number;
+	submissionsUrl: string;
+	subscribedCourses: any;
+	url: string;
 }

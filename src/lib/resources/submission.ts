@@ -1,10 +1,11 @@
 import {compare} from "./helperfunctions";
 import {Resource} from "./resource";
+import { SubmissionStatus, SubmissionStatusEnum } from "../data/submission_status";
 
 /**
  * A submission on Dodona.
  */
-class Submission implements Resource {
+export class Submission implements Resource {
 	private readonly accepted: boolean;
 	private readonly code: string;
 	private readonly createdAt: Date;
@@ -13,7 +14,7 @@ class Submission implements Resource {
 
 	private readonly exerciseUrl: string;
 	private readonly id: number;
-	private readonly status: SubmissionStatus;
+	private readonly status: SubmissionStatusEnum;
 	private readonly summary: string;
 	private readonly url: string;
 
@@ -31,14 +32,14 @@ class Submission implements Resource {
 	 * @param url       the url
 	 */
 	public constructor(accepted: boolean,
-                    code: string,
-                    course: string,
-                    createdAt: Date,
-                    exercise: string,
-                    id: number,
-                    status: SubmissionStatus,
-                    summary: string,
-                    url: string) {
+                       code: string,
+					   course: string,
+					   createdAt: Date,
+					   exercise: string,
+					   id: number,
+					   status: SubmissionStatusEnum,
+					   summary: string,
+					   url: string) {
 		this.accepted = accepted;
 		this.code = code;
 		this.courseUrl = course;
@@ -74,7 +75,7 @@ class Submission implements Resource {
 		return this.id;
 	}
 
-	public getStatus(): SubmissionStatus {
+	public getStatus(): SubmissionStatusEnum {
 		return this.status;
 	}
 
@@ -93,4 +94,36 @@ class Submission implements Resource {
 	public tostring(): string {
 		return `Submission{${this.id}, ${this.status}}`;
 	}
+
+	static fromJSON(json: SubmissionJSON|string) :Submission {
+		if (typeof json === "string"){
+			return JSON.parse(json, Submission.reviver);
+		}
+		return new Submission(json.accepted === "true", 
+							  json.code,
+							  json.course,
+							  new Date(json.createdAt),
+							  json.exercise,
+							  json.id,
+							  SubmissionStatus.byName(json.status),
+							  json.summary,
+							  json.url
+							);
+	}
+
+	static reviver(key: string, value: any): any {
+		return key === "" ? Submission.fromJSON(value) : value;
+	}
+}
+
+export interface SubmissionJSON{
+	accepted: string;
+	code: string;
+	course: string;
+	createdAt: string;
+	exercise: string;
+	id: number;
+	status: string;
+	summary: string;
+	url: string;
 }

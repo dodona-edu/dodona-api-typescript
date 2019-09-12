@@ -1,4 +1,4 @@
 export interface Resource {
-    getId(): number;
-    getUrl(): string;
+    getId() :number;
+    getUrl() :string;
 }

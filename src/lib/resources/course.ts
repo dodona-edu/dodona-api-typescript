@@ -1,4 +1,4 @@
-import { CourseColorEnum } from "../data/course_color";
+import { CourseColor, CourseColorEnum } from "../data/course_color";
 import { compare } from "./helperfunctions";
 
 /**
@@ -27,11 +27,11 @@ export class Course {
 	 * @param year      the academic year
 	 */
 	constructor(color: CourseColorEnum,
-				         id: number,
-				         name: string,
-				         seriesUrl: string,
-				         teacher: string,
-				         url: string,
+				id: number,
+				name: string,
+				seriesUrl: string,
+				teacher: string,
+				url: string,
 	            year: string) {
 		this.color = color;
 		this.id = id;
@@ -89,4 +89,31 @@ export class Course {
 		let pattern :RegExp = new RegExp("courses/([0-9]+)");
 		return Number.parseInt(url.match(pattern)[1]);
 	}
+
+	static fromJSON(json :CourseJSON|string) :Course{
+		if (typeof json === "string"){
+			return JSON.parse(json, Course.reviver);
+		}
+		return new Course(CourseColor.byName(json.color),
+						  json.id,
+						  json.name,
+						  json.seriesUrl,
+						  json.teacher,
+						  json.url,
+						  json.year);
+	}
+
+	static reviver(key :string, value :any) :any {
+		return key === "" ? Course.fromJSON(value) : value;
+	}
+}
+
+export interface CourseJSON{
+	color: string;
+	id: number;
+	name: string;
+	seriesUrl: string;
+	teacher: string;
+	url: string;
+    year: string;
 }

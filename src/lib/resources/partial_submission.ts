@@ -1,4 +1,4 @@
-import { SubmissionStatus } from "../data/submission_status";
+import { SubmissionStatus, SubmissionStatusEnum } from "../data/submission_status";
 
 /**
  * A partal submission on Dodona.
@@ -11,7 +11,7 @@ export class PartialSubmission {
 	
 	private readonly exerciseUrl :string;
 	private readonly id :number;
-	private readonly status :SubmissionStatus;
+	private readonly status :SubmissionStatusEnum;
 	private readonly summary :string;
 	private readonly url :string;
 	
@@ -28,13 +28,13 @@ export class PartialSubmission {
 	 * @param url       the url
 	 */
 	public constructor(accepted :boolean,
-	                             course :string,
-	                             createdAt :Date,
-	                             exercise :string,
-	                             id :number,
-	                             status :SubmissionStatus,
-	                             summary :string,
-	                             url :string) {
+					   course :string,
+					   createdAt :Date,
+					   exercise :string,
+					   id :number,
+					   status :SubmissionStatusEnum,
+					   summary :string,
+					   url :string) {
 		this.accepted = accepted;
 		this.courseUrl = course;
 		this.createdAt = createdAt;
@@ -61,7 +61,7 @@ export class PartialSubmission {
 		return this.id;
 	}
 	
-	public getStatus() :SubmissionStatus {
+	public getStatus() :SubmissionStatusEnum {
 		return this.status;
 	}
 	
@@ -80,4 +80,34 @@ export class PartialSubmission {
 	public toString() :string {
 		return `Submission{id=${this.id}, status=${this.status}}`;
 	}
+
+	static fromJSON(json: PartialSubmissionJSON|string) :PartialSubmission {
+		if (typeof json === "string"){
+			return JSON.parse(json, PartialSubmission.reviver);
+		}
+		return new PartialSubmission(json.accepted === "true", 
+							         json.course,
+							         new Date(json.createdAt),
+							         json.exercise,
+							         json.id,
+							         SubmissionStatus.byName(json.status),
+							         json.summary,
+							         json.url,
+									);
+	}
+
+	static reviver(key: string, value: any): any {
+		return key === "" ? PartialSubmission.fromJSON(value) : value;
+	}
+}
+
+export interface PartialSubmissionJSON{
+	accepted: string;
+	course: string;
+	createdAt: string;
+	exercise: string;
+	id: number;
+	status: string;
+	summary: string;
+	url: string;
 }
