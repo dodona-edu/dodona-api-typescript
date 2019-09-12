@@ -15,7 +15,7 @@ export enum CourseColorEnum {
 	TEAL = ["teal", Color("#009688")] as any,
 }
 
-class CourseColor {
+export class CourseColor {
 
 	/**
 	 * Finds a CourseColor given its name.

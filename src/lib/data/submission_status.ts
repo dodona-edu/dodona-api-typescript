@@ -1,4 +1,4 @@
-enum SubmissionStatusEnum {
+export enum SubmissionStatusEnum {
     COMPILATION_ERROR = "compilation error",
 	CORRECT = "correct",
 	INTERNAL_ERROR = "internal error",
@@ -32,7 +32,7 @@ export class SubmissionStatus {
 	 * @param name the name to find
 	 * @return the submission status to find
 	 */
-	public byName(name: string): SubmissionStatusEnum {
+	public static byName(name: string): SubmissionStatusEnum {
 		const matches: string[] = Object.keys(SubmissionStatusEnum).filter(key => (SubmissionStatusEnum[key] === name));
 		if (matches.length === 1) {
 			return SubmissionStatusEnum[matches[0]];
