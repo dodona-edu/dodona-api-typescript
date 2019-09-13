@@ -6,6 +6,7 @@ import { ResourceAccessDeniedException } from "./resource_access_denied_exceptio
 export class SubmissionAccessDeniedException extends ResourceAccessDeniedException {
 	private readonly url: string;
 
+	__proto__ :ResourceAccessDeniedException;
 	/**
 	 * SubmissionAccessDeniedException constructor.
 	 *
@@ -14,6 +15,7 @@ export class SubmissionAccessDeniedException extends ResourceAccessDeniedExcepti
 	public constructor(url: string) {
 		super(`You may not access the submission at url ${url}.`);
 		this.url = url;
+		this.__proto__ = SubmissionAccessDeniedException.prototype;
 	}
 
 	/**

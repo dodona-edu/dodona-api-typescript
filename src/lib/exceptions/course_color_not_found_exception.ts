@@ -3,17 +3,20 @@ import { DodonaException } from "./dodonaexception";
 /**
  * A required course color was not found.
  */
-class CourseColorNotFoundException extends DodonaException {
-	private readonly color: string;
+export class CourseColorNotFoundException extends DodonaException {
+	private color: string;
+	__proto__: DodonaException;
+
 
 	/**
 	 * CourseColorNotFoundException constructor.
 	 *
 	 * @param color the name of the color that was not found
 	 */
-	public constructor(color: string) {
+	constructor(color: string) {
 		super(`No color was found for "${color}".`);
 		this.color = color;
+		this.__proto__ = CourseColorNotFoundException.prototype;
 	}
 
 	/**
@@ -21,11 +24,8 @@ class CourseColorNotFoundException extends DodonaException {
 	 *
 	 * @return the color
 	 */
-	public getColor(): string {
+	public getColor() :string {
 		return this.color;
 	}
 
-	public toString(): string {
-		return `CourseColorNotFoundException{color=${this.color}}`;
-	}
 }

@@ -5,6 +5,7 @@ import { ResourceAccessDeniedException } from "./resource_access_denied_exceptio
  */
 export class SeriesAccessDeniedException extends ResourceAccessDeniedException {
 	private readonly url: string;
+	__proto__ :ResourceAccessDeniedException;
 
 	/**
 	 * SeriesAccessDeniedException constructor.
@@ -14,6 +15,7 @@ export class SeriesAccessDeniedException extends ResourceAccessDeniedException {
 	public constructor(url: string) {
 		super(`You may not access the series at url ${url}.`);
 		this.url = url;
+		this.__proto__ = SeriesAccessDeniedException.prototype;
 	}
 
 	/**

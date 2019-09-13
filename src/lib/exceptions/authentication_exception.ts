@@ -6,6 +6,7 @@ export class AuthenticationException extends DodonaException {
 	public static readonly INVALID: string = "An invalid API token was provided.";
 	public static readonly MISSING: string = "No API token was provided.";
 
+	__proto__ :DodonaException;
 	/**
 	 * Generates an exception stating that there was an API token provided, but
 	 * it was invalid.
@@ -32,6 +33,7 @@ export class AuthenticationException extends DodonaException {
 	 */
 	private constructor(message: string) {
 		super(message);
+		this.__proto__ = AuthenticationException.prototype;
 	}
 
 	public toString(): string {

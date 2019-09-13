@@ -5,7 +5,7 @@ import { DodonaException } from "./dodonaexception";
  */
 export class SubmissionStatusNotFoundException extends DodonaException {
 	private readonly status: string;
-
+	__proto__ :DodonaException;
 	/**
 	 * SubmissionStatusNotFoundException constructor.
 	 *
@@ -14,6 +14,7 @@ export class SubmissionStatusNotFoundException extends DodonaException {
 	public constructor(status: string) {
 		super(`No submission status was found for "${status}".`);
 		this.status = status;
+		this.__proto__ = SubmissionStatusNotFoundException.prototype;
 	}
 
 	/**

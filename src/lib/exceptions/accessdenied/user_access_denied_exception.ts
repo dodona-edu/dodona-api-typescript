@@ -6,6 +6,7 @@ import { ResourceAccessDeniedException } from "./resource_access_denied_exceptio
 export class UserAccessDeniedException extends ResourceAccessDeniedException {
 	private readonly url: string;
 
+	__proto__ :ResourceAccessDeniedException
 	/**
 	 * UserAccessDeniedException constructor.
 	 *
@@ -14,6 +15,7 @@ export class UserAccessDeniedException extends ResourceAccessDeniedException {
 	public constructor(url: string) {
 		super(`You may not access the user at url ${url}.`);
 		this.url = url;
+		this.__proto__ = UserAccessDeniedException.prototype;
 	}
 
 	/**

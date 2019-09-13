@@ -6,6 +6,7 @@ import { ResourceNotFoundException } from "./resource_not_found_exception";
 export class ExerciseNotFoundException extends ResourceNotFoundException {
 	private readonly url: string;
 
+	__proto__ :ResourceNotFoundException;
 	/**
 	 * ExerciseNotFoundException constructor.
 	 *
@@ -14,6 +15,7 @@ export class ExerciseNotFoundException extends ResourceNotFoundException {
 	public constructor(url: string) {
 		super(`No exercise was found at the given url: ${url}.`);
 		this.url = url;
+		this.__proto__ = ExerciseNotFoundException.prototype;
 	}
 
 	/**

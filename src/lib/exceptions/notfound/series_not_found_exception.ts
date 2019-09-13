@@ -6,6 +6,8 @@ import { ResourceNotFoundException } from "./resource_not_found_exception";
 export class SeriesNotFoundException extends ResourceNotFoundException {
 	private readonly url: string;
 
+
+	__proto__ :ResourceNotFoundException
 	/**
 	 * SeriesNotFoundException constructor.
 	 *
@@ -14,6 +16,7 @@ export class SeriesNotFoundException extends ResourceNotFoundException {
 	public constructor(url: string) {
 		super(`No series was found at the given url: ${url}`);
 		this.url = url;
+		this.__proto__ = SeriesNotFoundException.prototype;
 	}
 
 	/**

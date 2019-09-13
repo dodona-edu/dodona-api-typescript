@@ -6,6 +6,7 @@ import { ResourceNotFoundException } from "./resource_not_found_exception";
 export class UserNotFoundException extends ResourceNotFoundException {
 	private readonly url: string;
 
+	__proto__ :ResourceNotFoundException;
 	/**
 	 * UserNotFoundException constructor.
 	 *
@@ -14,6 +15,7 @@ export class UserNotFoundException extends ResourceNotFoundException {
 	public constructor(url: string) {
 		super(`No user was found at the given url: ${url}.`);
 		this.url = url;
+		this.__proto__ = UserNotFoundException.prototype;
 	}
 
 	/**
