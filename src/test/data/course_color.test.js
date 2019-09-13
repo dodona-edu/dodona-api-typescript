@@ -1,7 +1,7 @@
 import {CourseColor, CourseColorEnum} from "../../lib/data/course_color";
 
 /**
- * Tests src.lib.data.CourseColor.
+ * Tests src.lib.data.course_color.
  */
 
 

@@ -2,7 +2,7 @@ import { SubmissionStatus, SubmissionStatusEnum } from "../../lib/data/submissio
 import { SubmissionStatusNotFoundException } from "../../lib/exceptions/submission_status_not_found_exception";
 
 /**
- * Tests src.lib.data.SubmissionStatus.
+ * Tests src.lib.data.submission_status.
  */
 
 /**

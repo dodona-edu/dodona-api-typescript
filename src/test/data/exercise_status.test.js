@@ -1,6 +1,6 @@
 import { ExerciseStatus, ExerciseStatusEnum } from "../../lib/data/exercise_status";
 /**
- * Tests src.lib.data.ExerciseStatus.
+ * Tests src.lib.data.exercise_status.
  */
 
 /**
