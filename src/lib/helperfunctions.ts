@@ -7,3 +7,10 @@ export function compare<T>(first: T, second: T): number {
         return 1;
     }
 }
+
+/**
+ * Returns a random integer between 0 and Number.MAX_VALUE.
+ */
+export function randomInt() {
+    return Math.floor(Math.random() * (Number.MAX_VALUE));
+}
