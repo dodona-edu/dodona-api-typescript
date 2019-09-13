@@ -1,4 +1,4 @@
-import {compare} from "./helperfunctions";
+import {compare} from "../helperfunctions";
 import {Resource} from "./resource";
 import { SubmissionStatus, SubmissionStatusEnum } from "../data/submission_status";
 

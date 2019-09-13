@@ -1,5 +1,5 @@
 import { CourseColor, CourseColorEnum } from "../data/course_color";
-import { compare } from "./helperfunctions";
+import { compare } from "../helperfunctions";
 
 /**
  * A course on Dodona.

@@ -1,5 +1,5 @@
 import { Course } from "./course";
-import { compare } from "./helperfunctions";
+import { compare } from "../helperfunctions";
 /**
  * A user on Dodona.
  */

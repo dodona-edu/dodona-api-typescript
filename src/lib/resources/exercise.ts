@@ -1,5 +1,5 @@
 import { ExerciseStatus, ExerciseStatusEnum } from "../data/exercise_status";
-import { compare } from "./helperfunctions";
+import { compare } from "../helperfunctions";
 import { ProgrammingLanguage, ProgrammingLanguageJSON } from "./programming_language";
 import { Resource } from "./resource";
 
