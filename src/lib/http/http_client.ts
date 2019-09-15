@@ -1,30 +1,38 @@
 import { AuthenticationException } from "../exceptions/authentication_exception";
-import { HttpResponse } from "./http_response";
+import { ResourceAccessDeniedException } from "../exceptions/accessdenied/resource_access_denied_exception";
+import { ResourceNotFoundException } from "../exceptions/notfound/resource_not_found_exception";
+const fetch = require("node-fetch");
 
 /**
  * Implementation of a HttpClient.
  */
 export class HttpClient {
-	private static readonly ACCEPT_HEADER: string = "Accept";
-	private static readonly ACCEPT_VALUE: string = "application/json";
-	private static readonly AUTHORIZATION_HEADER: string = "Authorization";
-	private static readonly CONTENT_TYPE_HEADER: string = "Content-Type";
-	private static readonly CONTENT_TYPE_VALUE: string = "application/json";
-	private static readonly USER_AGENT_HEADER: string = "User-Agent";
+	private readonly CONTENT_TYPE_VALUE: string = "application/json";
 
-	private authentication: string = null;
+	private authentication :string = "";
 
-	private userAgent: string = null;
+	private userAgent :string = "";
 
-	// private readonly mapper :ObjectMapper;
+	private forbidden :ResourceAccessDeniedException = new ResourceAccessDeniedException("Access denied for a resource.");
+
+	private notfound :ResourceNotFoundException = new ResourceNotFoundException("Access denied for a resource.");
 
 	/**
 	 * HttpClientImpl constructor.
 	 *
 	 * @param mapper object mapper
 	 */
-	public constructor(/* mapper :ObjectMapper */) {
-		// this.mapper = mapper;
+	public constructor() {
+	}
+
+	public setForbidden(forbidden :ResourceAccessDeniedException) :this{
+		this.forbidden = forbidden;
+		return this;
+	}
+
+	public setNotFound(notfound :ResourceNotFoundException) :this{
+		this.notfound = notfound;
+		return this;
 	}
 
 	public authenticate(apiToken: string): HttpClient {
@@ -32,38 +40,31 @@ export class HttpClient {
 		return this;
 	}
 
-	public get(url: string): Promise<Response> {
-		return fetch(url, {
-			method: "GET", // *GET, POST, PUT, DELETE, etc.
-			// mode: 'cors', // no-cors, cors, *same-origin
-			// cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-			credentials: "same-origin", // include, *same-origin, omit
+	public async get(url: string): Promise<Response> {
+		let resp = await fetch(url, {
+			method: "GET",
+			credentials: "same-origin",
 			headers: {
-				"Content-Type": "application/json",
-				// 'Content-Type': 'application/x-www-form-urlencoded',
+				"Accept": this.CONTENT_TYPE_VALUE,
+				"User-Agent": this.userAgent,
+				"Authorization": this.authentication
         	},
-        	// redirect: 'follow', // manual, *follow, error
-        	// referrer: 'no-referrer', // no-referrer, *client
-        	// body: JSON.stringify(data), // body data type must match "Content-Type" header
-
-		}).then(resp => this.handleresp(resp));
+		})
+		return this.handleresp(resp);
 	}
 
-	public  post(url: string, body: any): Promise<Response> {
+	public async post(url: string, body: any): Promise<Response> {
 		return fetch(url, {
-			method: "POST", // *GET, POST, PUT, DELETE, etc.
-			// mode: 'cors', // no-cors, cors, *same-origin
-			// cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-			credentials: "same-origin", // include, *same-origin, omit
+			method: "POST",
+			credentials: "same-origin",
 			headers: {
-				"Content-Type": "application/json",
-				// 'Content-Type': 'application/x-www-form-urlencoded',
+				"Accept": this.CONTENT_TYPE_VALUE,
+				"User-Agent": this.userAgent,
+				"Authorization": this.authentication
         	},
-        	// redirect: 'follow', // manual, *follow, error
-        	// referrer: 'no-referrer', // no-referrer, *client
-        	// body: JSON.stringify(data), // body data type must match "Content-Type" header
+        	body: JSON.stringify(body), // body data type must match "Content-Type" header
 
-		}).then(resp => this.handleresp(resp));
+		});
 }
 
 	public setUserAgent(userAgent: string): HttpClient {
@@ -88,11 +89,11 @@ export class HttpClient {
 			}
 
 			if (response.status == 403) {
-				throw HttpResponse.forbidden();
+				throw this.forbidden;
 			}
 
 			if (response.status == 404) {
-				throw HttpResponse.notFound();
+				throw this.notfound;
 			}
 
 			return response;
