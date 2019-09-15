@@ -4,7 +4,7 @@ import { DodonaClient } from "./dodona_client";
 /**
  * Implementation of DodonaBuilder.
  */
-class DodonaBuilder {
+export class DodonaBuilder {
 	private apiToken :string = "";
 	private host :string = "https://dodona.ugent.be";
 	private http :HttpClient;

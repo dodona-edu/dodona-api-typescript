@@ -10,13 +10,12 @@ import { User } from "./resources/user";
  * Implementation of DodonaClient.
  */
 export class DodonaClient  {
-	private readonly host :string;
-	private readonly http :HttpClient;
 	private readonly courses :CourseManager;
 	private readonly exercises :ExerciseManager;
 	private readonly series :SeriesManager;
 	private readonly submissions :SubmissionManager;
 	private readonly users :UserManager;
+	private readonly me :User;
 	
 	/**
 	 * DodonaClientImpl constructor.
@@ -25,13 +24,12 @@ export class DodonaClient  {
 	 * @param http the http client
 	 */
 	private constructor(host :string, http :HttpClient, user :User) {
-		this.host = host;
-		this.http = http;
 		this.courses = new CourseManager(host, http);
 		this.exercises = new ExerciseManager(host, http);
 		this.series = new SeriesManager(host, http);
 		this.submissions = new SubmissionManager(host, http, user);
 		this.users = new UserManager(host, http);
+		this.me = user;
 	}
 	
 	public getCourses() :CourseManager {
@@ -42,16 +40,17 @@ export class DodonaClient  {
 		return this.exercises;
 	}
 	public static async getDodonaClient(host :string, http :HttpClient) : Promise<DodonaClient>{
-		let user :User = await http.get(host).then(resp => resp.json()).then(json => user = JSON.parse(json, User.reviver));
+		let user :User = await http.get(host).then(resp => resp.json())
+											 .then(json => {
+												 return User.fromJSON(json.user);
+												});
 		return new DodonaClient(host, http, user);
 	}
-
-	public async getMe() :Promise<User> {
-		let user :User;
-		await this.http.get(this.host).then(resp => resp.json()).then(json => user = JSON.parse(json, User.reviver))
-		return user;
-	}
 	
+	public getMe() :User{
+		return this.me;
+	}
+
 	public getSeries() :SeriesManager {
 		return this.series;
 	}
