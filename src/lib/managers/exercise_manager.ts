@@ -1,7 +1,7 @@
 import { ExerciseAccessDeniedException } from "../exceptions/accessdenied/exercise_access_denied_exception";
 import { ExerciseNotFoundException } from "../exceptions/notfound/exercise_not_found_exception";
 import { HttpClient } from "../http/http_client";
-import { Exercise } from "../resources/exercise";
+import { Exercise, ExerciseJSON } from "../resources/exercise";
 import { AbstractManager } from "./abstract_manager";
 import { Series } from "../resources/series";
 import { PartialSubmission } from "../resources/partial_submission";
@@ -10,12 +10,7 @@ import { Course } from "../resources/course";
 /**
  * Implementation of ExerciseManager.
  */
-export class ExerciseManager extends AbstractManager<Exercise> {
-	private static readonly ENDPOINT_EXERCISES :string = "/exercises";
-	private static readonly ENDPOINT_EXERCISES_ID :string = ExerciseManager.ENDPOINT_EXERCISES + "/${exerciseId}";
-
-	private static readonly ENDPOINT_COURSES_EXERCISES_ID: string = "/courses/${courseId}" + ExerciseManager.ENDPOINT_EXERCISES_ID;
-
+export class ExerciseManager extends AbstractManager {
 	/**
 	 * ExerciseManagerImpl constructor.
 	 *
@@ -26,31 +21,45 @@ export class ExerciseManager extends AbstractManager<Exercise> {
 		super(host, http, (url) => new ExerciseAccessDeniedException(url), (url) => new ExerciseNotFoundException(url));
 	}
 
-	public getAll(series :Series): Promise<Exercise|Exercise[]> {
-		return this.parse(this.get(series.getExercisesUrl()));
+	public getAll(series :Series): Promise<Exercise[]> {
+		return this.parseExcercises(this.get(series.getExercisesUrl()));
 	}
 
 	public getExcerciseOfCourse(courseId :number, exerciseId :number): Promise<Exercise> {
-		let result = this.parse(this.get(this.url(`/courses/${courseId}/exercises/${exerciseId}`)));
-		return result[0] || result; // In case the return value isn't an Array.
+		let result = this.parseExcercise(this.get(this.url(`/courses/${courseId}/exercises/${exerciseId}`)));
+		return result; // In case the return value isn't an Array.
 	}
 
 	public getExcercise(exerciseId :number): Promise<Exercise> {
-		let result = this.parse(this.get(this.url(`exercises/${exerciseId}`)));
-		return result[0] || result;
+		let result = this.parseExcercise(this.get(this.url(`exercises/${exerciseId}`)));
+		return result;
 	}
 
 	public getFromPartialSubmission(submission :PartialSubmission): Promise<Exercise> {
-		let exerciseId :number = Exercise.getId(submission.getExerciseUrl())
-		let courseId :number = Course.getId(submission.getCourseUrl());
-		return this.getExcerciseOfCourse(courseId, exerciseId) || this.getExcercise(exerciseId);
+		let exerciseId :number|null = Exercise.getId(submission.getExerciseUrl())
+		if (exerciseId === null) throw new Error(`No excerciseId from partial submission: \n${submission}`);
+		let submission_url :string|null = submission.getCourseUrl();
+		
+		if (submission_url !== null){
+			let courseId :number|null = Course.getId(submission_url);
+			if (courseId !== null) return this.getExcerciseOfCourse(courseId, exerciseId);
+		}
+		return this.getExcercise(exerciseId);
 	}
 
-	private parse(resp_promise : Promise<Response>) : Promise<Exercise|Exercise[]>{
+	private parseExcercise(resp_promise : Promise<Response>) : Promise<Exercise>{
 		return resp_promise.then( resp => {
 			return resp.json();
 		}).then(json => {
-			return JSON.parse(json, Exercise.reviver);
+			return Exercise.fromJSON(json);
+		});
+	}
+
+	private parseExcercises(resp_promise : Promise<Response>) : Promise<Exercise[]>{
+		return resp_promise.then( resp => {
+			return resp.json();
+		}).then(json => {
+			return  json.map((exercise :ExerciseJSON) => Exercise.fromJSON(exercise));
 		});
 	}
 }

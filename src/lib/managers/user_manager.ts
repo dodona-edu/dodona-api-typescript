@@ -7,9 +7,7 @@ import { UserNotFoundException } from "../exceptions/notfound/user_not_found_exc
 /**
  * Implementation of UserManager.
  */
-export class UserManager extends AbstractManager<User> {
-	private static readonly ENDPOINT_USERS :String = "/users/%d";
-	
+export class UserManager extends AbstractManager {	
 	/**
 	 * UserManagerImpl constructor.
 	 *

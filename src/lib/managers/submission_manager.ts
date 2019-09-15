@@ -12,12 +12,7 @@ import { PartialSubmission } from "../resources/partial_submission";
 /**
  * Implementation of SubmissionManager.
  */
-export class SubmissionManager extends AbstractManager<Submission>{
-	private static readonly ENDPOINT_COURSE_ID_EXERCISE_ID :string = "%s?course_id=%d&exercise_id=%d";
-	private static readonly ENDPOINT_EXERCISE_ID :string = "%s?exercise_id=%d";
-	private static readonly ENDPOINT_SUBMISSIONS :string = "/submissions";
-	private static readonly ENDPOINT_SUBMISSIONS_ID :string = SubmissionManager.ENDPOINT_SUBMISSIONS + "/%d";
-	
+export class SubmissionManager extends AbstractManager{
 	private readonly user :User;
 	
 	/**
@@ -50,12 +45,12 @@ export class SubmissionManager extends AbstractManager<Submission>{
 										   "series_id": seriesId,
 										   "code": solution})
 		
-		let url :string = this.url(SubmissionManager.ENDPOINT_SUBMISSIONS);
+		let url :string = this.url("/submissions");
 		return await this.post(url, request).then(resp => resp.status);
 	}
 	
 	public getById(id :number) :Promise<Submission> {
-		return this.parseSub(this.get(this.url(`${SubmissionManager.ENDPOINT_SUBMISSIONS}/${id}`)));
+		return this.parseSub(this.get(this.url(`/submissions/${id}`)));
 	}
 	
 	public getByPartialSub(partial :PartialSubmission) :Promise<Submission> {
@@ -87,15 +82,6 @@ export class SubmissionManager extends AbstractManager<Submission>{
 		}).then(json => {
 			let result = JSON.parse(json, Submission.reviver);
 			return result[0] || result
-		});
-	}
-
-	private parsePartial(resp_promise : Promise<Response>) : Promise<PartialSubmission>{
-		return resp_promise.then( resp => {
-			return resp.json();
-		}).then(json => {
-			let result = JSON.parse(json, PartialSubmission.reviver);
-			return result[0] || result;
 		});
 	}
 

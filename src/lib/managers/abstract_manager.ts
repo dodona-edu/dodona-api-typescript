@@ -1,5 +1,4 @@
 import { HttpClient } from "../http/http_client";
-import { Resource } from "../resources/resource";
 import { ResourceAccessDeniedException } from "../exceptions/accessdenied/resource_access_denied_exception";
 import { ResourceNotFoundException } from "../exceptions/notfound/resource_not_found_exception";
 
@@ -8,13 +7,12 @@ import { ResourceNotFoundException } from "../exceptions/notfound/resource_not_f
  *
  * @param <T> type class of the resource
  */
-export abstract class AbstractManager<T extends Resource> {
+export abstract class AbstractManager {
 	private readonly host :string;
 	private readonly http :HttpClient;
-	// private readonly impl;
 
-	private readonly forbidden :(string) => ResourceAccessDeniedException;
-	private readonly notFound :(string) => ResourceNotFoundException;
+	private readonly forbidden :(a: string) => ResourceAccessDeniedException;
+	private readonly notFound :(a: string) => ResourceNotFoundException;
 	/**
 	 * AbstractManagerImpl constructor.
 	 *
@@ -25,33 +23,16 @@ export abstract class AbstractManager<T extends Resource> {
 	 * @param notFound  404 exception
 	 */
 	constructor(host: string, http: HttpClient,
-				/*Class<? extends T> impl,*/
-				forbidden :(string) => ResourceAccessDeniedException,
-				notFound :(string) => ResourceNotFoundException) {
+				forbidden :(a :string) => ResourceAccessDeniedException,
+				notFound :(a :string) => ResourceNotFoundException) {
 		this.forbidden = forbidden;
 		this.host = host;
 		this.http = http;
-		// this.impl = impl;
 		this.notFound = notFound;
 	}
 
-	/**
-	 * Gets a custom response.
-	 *
-	 * @param url the url to get
-	 * @param cls the class of the response
-	 * @param <R> the type of the response
-	 * @return the resolved response
-	 */
-    /*get(url :string) :R as R {
-		return this.http.get(url).then(json => JSON.parse)
-			.forbidden(this.forbidden.apply(url))
-			.notFound(this.notFound.apply(url))
-			.resolve();
-	}*/
-
 	public get(url :string) :Promise<Response> {
-		return this.http.get(url/*, this.impl*/);
+		return this.http.setForbidden(this.forbidden(url)).setNotFound(this.notFound(url)).get(url);
 	}
 
 	/**

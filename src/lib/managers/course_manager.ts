@@ -4,13 +4,11 @@ import { HttpClient } from "../http/http_client";
 import { CourseAccessDeniedException } from "../exceptions/accessdenied/course_access_denied_exception";
 import { CourseNotFoundException } from "../exceptions/notfound/course_not_found_exception";
 import { PartialSubmission } from "../resources/partial_submission";
-import { Exercise } from "../resources/exercise";
 
 /**
  * Implementation of CourseManager.
  */
-export class CourseManager extends AbstractManager<Course> {
-	private static readonly ENDPOINT_COURSES :string = "/courses/%d";
+export class CourseManager extends AbstractManager {
 	
 	/**
 	 * CourseManagerImpl constructor.
@@ -27,7 +25,9 @@ export class CourseManager extends AbstractManager<Course> {
 	}
 	
 	public getPartialSubmissionCourse(submission :PartialSubmission) :Promise<Course> {
-		return this.parse(this.get(submission.getCourseUrl()));
+		let submission_url :string|null = submission.getCourseUrl();
+		if (submission_url === null) throw new Error (`No Course url from partialsumbission:\n${submission}`);
+		return this.parse(this.get(submission_url));
 	}
 
 
@@ -35,7 +35,7 @@ export class CourseManager extends AbstractManager<Course> {
 		return resp_promise.then( resp => {
 			return resp.json();
 		}).then(json => {
-			return JSON.parse(json, Course.reviver);
+			return Course.fromJSON(json);
 		});
 	}
 }
