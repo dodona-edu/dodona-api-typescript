@@ -3,6 +3,7 @@ module.exports = {
   globals: {
     "ts-jest": {
       tsConfig: {
+        lib: ["es2018", "dom"],
         allowJs: true,
       },
     },
