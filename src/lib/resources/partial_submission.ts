@@ -1,4 +1,4 @@
-import { SubmissionStatus, SubmissionStatusEnum } from "../data/submission_status";
+import { SubmissionStatus } from "../data/submission_status";
 
 /**
  * A partal submission on Dodona.
@@ -11,7 +11,7 @@ export class PartialSubmission {
 	
 	private readonly exerciseUrl :string;
 	private readonly id :number;
-	private readonly status :SubmissionStatusEnum;
+	private readonly status :SubmissionStatus;
 	private readonly summary :string;
 	private readonly url :string;
 	
@@ -32,7 +32,7 @@ export class PartialSubmission {
 					   createdAt :Date,
 					   exercise :string,
 					   id :number,
-					   status :SubmissionStatusEnum,
+					   status :SubmissionStatus,
 					   summary :string,
 					   url :string) {
 		this.accepted = accepted;
@@ -61,7 +61,7 @@ export class PartialSubmission {
 		return this.id;
 	}
 	
-	public getStatus() :SubmissionStatusEnum {
+	public getStatus() :SubmissionStatus {
 		return this.status;
 	}
 	
@@ -87,7 +87,7 @@ export class PartialSubmission {
 		}
 		return new PartialSubmission(json.accepted === "true", 
 							         json.course,
-							         new Date(json.createdAt),
+							         new Date(json.created_at),
 							         json.exercise,
 							         json.id,
 							         SubmissionStatus.byName(json.status),
@@ -104,7 +104,7 @@ export class PartialSubmission {
 export interface PartialSubmissionJSON{
 	accepted: string;
 	course: string;
-	createdAt: string;
+	created_at: string;
 	exercise: string;
 	id: number;
 	status: string;

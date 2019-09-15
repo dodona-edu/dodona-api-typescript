@@ -1,11 +1,11 @@
-import { CourseColor, CourseColorEnum } from "../data/course_color";
+import { CourseColor } from "../data/course_color";
 import { compare } from "../helperfunctions";
 
 /**
  * A course on Dodona.
  */
 export class Course {
-	private readonly color: CourseColorEnum;
+	private readonly color: CourseColor;
 	private readonly id: number;
 	private readonly name: string;
 	private readonly seriesUrl: string;
@@ -26,7 +26,7 @@ export class Course {
 	 * @param url       the url
 	 * @param year      the academic year
 	 */
-	constructor(color: CourseColorEnum,
+	constructor(color: CourseColor,
 				id: number,
 				name: string,
 				seriesUrl: string,
@@ -47,7 +47,7 @@ export class Course {
 		return compareYear != 0 ? compareYear : compare<string>(this.name.toLowerCase(), o.getName().toLowerCase());
 	}
 
-	public getColor(): CourseColorEnum {
+	public getColor(): CourseColor {
 		return this.color;
 	}
 
@@ -85,9 +85,10 @@ export class Course {
 	 * @param url the url to the course
 	 * @return the course id
 	 */
-	static getId(url :string) :number{
+	static getId(url :string) :number|null{
 		let pattern :RegExp = new RegExp("courses/([0-9]+)");
-		return Number.parseInt(url.match(pattern)[1]);
+		let match :RegExpMatchArray|null = url.match(pattern);
+		return match ? parseInt(match[1]) : null;
 	}
 
 	static fromJSON(json :CourseJSON|string) :Course{
@@ -97,7 +98,7 @@ export class Course {
 		return new Course(CourseColor.byName(json.color),
 						  json.id,
 						  json.name,
-						  json.seriesUrl,
+						  json.series,
 						  json.teacher,
 						  json.url,
 						  json.year);
@@ -112,7 +113,7 @@ export interface CourseJSON{
 	color: string;
 	id: number;
 	name: string;
-	seriesUrl: string;
+	series: string;
 	teacher: string;
 	url: string;
     year: string;

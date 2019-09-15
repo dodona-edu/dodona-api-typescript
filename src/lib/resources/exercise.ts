@@ -1,4 +1,4 @@
-import { ExerciseStatus, ExerciseStatusEnum } from "../data/exercise_status";
+import { ExerciseStatus } from "../data/exercise_status";
 import { compare } from "../helperfunctions";
 import { ProgrammingLanguage, ProgrammingLanguageJSON } from "./programming_language";
 import { Resource } from "./resource";
@@ -21,7 +21,7 @@ export class Exercise implements Resource{
 
 	private readonly programming_language: ProgrammingLanguage;
 
-	private readonly status: ExerciseStatusEnum;
+	private readonly status: ExerciseStatus;
 
 	private readonly url: string;
 
@@ -97,7 +97,7 @@ export class Exercise implements Resource{
 		return this.programming_language;
 	}
 
-	public getStatus(): ExerciseStatusEnum {
+	public getStatus(): ExerciseStatus {
 		return this.status;
 	}
 
@@ -121,14 +121,15 @@ export class Exercise implements Resource{
 	 */
 	static getId(url :string) :number|null {
 		let pattern :RegExp = new RegExp("exercises/([0-9]+)");
-		return Number.parseInt(url.match(pattern)[1]);
+		let match :RegExpMatchArray|null = url.match(pattern);
+		return match ? parseInt(match[1]) : null;
 	}
 
 	static fromJSON(json: ExerciseJSON|string): Exercise {
 		if (typeof json === "string"){
 			return JSON.parse(json, Exercise.reviver);
 		}
-		return new Exercise(json.boilerplate, 
+		return new Exercise(json.boilerplate ? json.boilerplate : "", 
 							json.description,
 							json.description_format,
 							json.has_correct_solution === "true",
@@ -136,7 +137,7 @@ export class Exercise implements Resource{
 							json.id,
 							json.last_solution_is_best === "true",
 							json.name,
-							JSON.parse(json.programming_language, ProgrammingLanguage.reviver),
+							ProgrammingLanguage.fromJson(json.programming_language),
 							json.url
 							);
 	}
@@ -155,6 +156,6 @@ export interface ExerciseJSON{
 	id :number;
 	last_solution_is_best :string;
 	name :string;
-	programming_language :string;
+	programming_language :ProgrammingLanguageJSON;
 	url :string;
 }

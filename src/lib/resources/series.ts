@@ -80,7 +80,7 @@ export class Series {
 		}
 		return new Series(new Date(json.deadline),
 						  json.description,
-						  json.exercisesUrl,
+						  json.exercises,
 						  json.id,
 						  json.name,
 						  json.order,
@@ -92,10 +92,10 @@ export class Series {
 	}
 }
 
-interface SeriesJSON{
+export interface SeriesJSON{
 	deadline: string,
 	description: string,
-	exercisesUrl: string,
+	exercises: string,
 	id: number,
 	name: string,
 	order: number,

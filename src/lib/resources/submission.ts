@@ -1,6 +1,6 @@
 import {compare} from "../helperfunctions";
 import {Resource} from "./resource";
-import { SubmissionStatus, SubmissionStatusEnum } from "../data/submission_status";
+import { SubmissionStatus } from "../data/submission_status";
 
 /**
  * A submission on Dodona.
@@ -14,7 +14,7 @@ export class Submission implements Resource {
 
 	private readonly exerciseUrl: string;
 	private readonly id: number;
-	private readonly status: SubmissionStatusEnum;
+	private readonly status: SubmissionStatus;
 	private readonly summary: string;
 	private readonly url: string;
 
@@ -37,7 +37,7 @@ export class Submission implements Resource {
 					   createdAt: Date,
 					   exercise: string,
 					   id: number,
-					   status: SubmissionStatusEnum,
+					   status: SubmissionStatus,
 					   summary: string,
 					   url: string) {
 		this.accepted = accepted;
@@ -75,7 +75,7 @@ export class Submission implements Resource {
 		return this.id;
 	}
 
-	public getStatus(): SubmissionStatusEnum {
+	public getStatus(): SubmissionStatus {
 		return this.status;
 	}
 
@@ -102,7 +102,7 @@ export class Submission implements Resource {
 		return new Submission(json.accepted === "true", 
 							  json.code,
 							  json.course,
-							  new Date(json.createdAt),
+							  new Date(json.created_at),
 							  json.exercise,
 							  json.id,
 							  SubmissionStatus.byName(json.status),
@@ -120,7 +120,7 @@ export interface SubmissionJSON{
 	accepted: string;
 	code: string;
 	course: string;
-	createdAt: string;
+	created_at: string;
 	exercise: string;
 	id: number;
 	status: string;

@@ -1,9 +1,10 @@
-import { Course } from "./course";
+import { Course, CourseJSON } from "./course";
 import { compare } from "../helperfunctions";
+import { Resource } from "./resource";
 /**
  * A user on Dodona.
  */
-export class User {
+export class User implements Resource{
 	private readonly correctExercises: number;
 	private readonly firstName: string;
 	private readonly id: number;
@@ -83,33 +84,33 @@ export class User {
 	public tostring(): string {
 		return `User{id=${this.id}, firstName=${this.firstName}, lastName=${this.lastName}}`;
 	}
-	static fromJSON(json: ExerciseJSON|string): User {
+	static fromJSON(json: UserJSON|string): User {
 		if (typeof json === "string"){
 			return JSON.parse(json, User.reviver);
 		}
-		return new User(json.correctExercises, 
-						json.firstName,
+		return new User(json.correct_exercises, 
+						json.first_name,
 						json.id,
-						json.lastName,
-						json.submissionCount,
-						json.submissionsUrl,
-						JSON.parse(json.subscribedCourses, Course.reviver),
+						json.last_name,
+						json.submission_count,
+						json.submissions,
+						json.subscribed_courses.map(course => Course.fromJSON(course)),
 						json.url,
 						);
 	}
 
 	static reviver(key: string, value: any): any {
-		return key === "" ? User.fromJSON(value) : value;
+		return key === "user" ? User.fromJSON(value) : value;
 	}
 }
 
-export interface ExerciseJSON{
-	correctExercises: number;
-	firstName: string;
+export interface UserJSON{
+	correct_exercises: number;
+	first_name: string;
 	id: number;
-	lastName: string;
-	submissionCount: number;
-	submissionsUrl: string;
-	subscribedCourses: any;
+	last_name: string;
+	submission_count: number;
+	submissions: string;
+	subscribed_courses: CourseJSON[];
 	url: string;
 }
