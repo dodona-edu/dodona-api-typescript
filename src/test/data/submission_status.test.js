@@ -9,11 +9,10 @@ import { SubmissionStatusNotFoundException } from "../../lib/exceptions/submissi
  * Tests SubmissionStatus.byName(String) using the status name.
  */
 test("Tests SubmissionStatus.byName(String) using the status name.", () => {
-	SubmissionStatus.keys().forEach(key => {
-		let status = SubmissionStatusEnum[key];
+	SubmissionStatus.values.forEach(status => {
 		const byName = SubmissionStatus.byName(status);
-		expect(byName).toBeDefined();
-		expect(byName).toBe(status);
+		expect(byName).toBeTruthy();
+		expect(byName.getName()).toBe(status);
 	})
 })
 
@@ -33,13 +32,10 @@ test("Tests SubmissionStatus.byName(String) using a non-existing color.", () => 
  * Tests SubmissionStatus#getName().
  */
 test("Tests SubmissionStatus#getName().", () => {
-	const amount = SubmissionStatus.keys().length;
-	const names = SubmissionStatus.keys().map(key => new SubmissionStatus(SubmissionStatusEnum[key]));
-	const actualnames = SubmissionStatus.keys().map(key => SubmissionStatusEnum[key]);
-	expect(names).toBeDefined();
-	names.forEach(name => {
-		expect(name).toBeDefined;
-		expect(actualnames).toContain(name.getName());
-	})
+	const amount = SubmissionStatus.values.length;
+	const names = SubmissionStatus.values.map((values, index) => new SubmissionStatus(index));
+	const actualnames = SubmissionStatus.values;
+	expect(names).toBeTruthy();
+	names.forEach(name => expect(actualnames).toContain(name.getName()));
 	expect(names.length).toBe(amount);
 })

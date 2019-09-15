@@ -9,10 +9,10 @@ import {CourseColor, CourseColorEnum} from "../../lib/data/course_color";
  * Tests CourseColor.byName(String) using the color name.
  */
 test("Tests CourseColor.byName(String) using the color name.", () =>{
-	CourseColor.keys().forEach(key => {
-		let color = CourseColorEnum[key]
-		let byName = CourseColor.byName(color[0]);
-		expect(byName).toBe(color);
+	CourseColor.values.forEach((value, index) => {
+		let byName = CourseColor.byName(value[0]);
+		expect(byName).toBeTruthy();
+		expect(byName).toStrictEqual(new CourseColor(index));
 	});
 })
 
@@ -24,16 +24,15 @@ test("Tests CourseColor.byName(String) using a non-existing color.", () =>{
 	let name = "non-existing-color";
 	expect(() => {
 		CourseColor.byName(name);
-	}).toThrowError(new Error(`Color named ${name} not found.`));
+	}).toThrowError(new Error(`Color named '${name}' not found.`));
 })
 
 /**
  * Tests CourseColor#getColor().
  */
 test("Tests CourseColor#getColor().", () => {
-	const amount = CourseColor.keys().length;
-	let colors = getColors();
-	expect(colors).toBeDefined();
+	const amount = CourseColor.values.length;
+	let colors = CourseColor.values.map(val => val[0]);
 	expect(colors.length).toBe(amount);
 })
 
@@ -42,23 +41,11 @@ test("Tests CourseColor#getColor().", () => {
  * Tests CourseColor#getName().
  */
 test("Tests CourseColor#getName().", () => {
-	const amount = CourseColor.keys().length;
+	const amount = CourseColor.values.length;
 
-	const names = getColors().map(color => color.getName());
-	expect(names).toBeDefined();
-	names.forEach(name => expect(name).toBeDefined());
+	const names = CourseColor.values.map((_, index) => new CourseColor(index)).map(color => color.getName());
+	expect(names).toBeTruthy();
+	names.forEach(name => expect(name).toBeTruthy());
 	expect(names.length).toBe(amount);
 })
 
-/**
- * Gives an list of all CourseColors.
- */
-function getColors(){
-	let colors = [];
-	CourseColor.keys().forEach(key => {
-		let tuple = CourseColorEnum[key];
-		let color = new CourseColor(tuple[0], tuple[1]);
-		colors.push(color);
-	});
-	return colors;
-}
