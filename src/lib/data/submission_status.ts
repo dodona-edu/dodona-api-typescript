@@ -1,38 +1,39 @@
 import { SubmissionStatusNotFoundException } from "../exceptions/submission_status_not_found_exception";
 
 export enum SubmissionStatusEnum {
-    COMPILATION_ERROR = "compilation error",
-	CORRECT = "correct",
-	INTERNAL_ERROR = "internal error",
-	MEMORY_LIMIT_EXCEEDED = "memory limit exceeded",
-	QUEUED = "queued",
-	RUNNING = "running",
-	RUNTIME_ERROR = "runtime error",
-	TIME_LIMIT_EXCEEDED = "time limit exceeded",
-	UNKNOWN = "unknown",
-    WRONG = "wrong",
+    COMPILATION_ERROR = 0,
+	CORRECT,
+	INTERNAL_ERROR,
+	MEMORY_LIMIT_EXCEEDED,
+	QUEUED,
+	RUNNING,
+	RUNTIME_ERROR,
+	TIME_LIMIT_EXCEEDED,
+	UNKNOWN,
+    WRONG,
 }
 /**
  * The status of a submission.
  */
 export class SubmissionStatus {
 
-	public name: string;
+	public state: number;
+
+	private static values :string[] = ["compilation error", "correct", "internal error",
+									   "memory limit exceeded", "queued", "running",
+									   "runtime error", "time limit exceeded", "unknown",
+									   "wrong"]
 
 	/**
 	 * SubmissionStatus constructor.
 	 *
-	 * @param name the name of the status
+	 * @param state the state of the status
 	 */
-	constructor(name: string) {
-		this.name = name;
-	}
-	
-	/**
-	 * Returns list of the CourseColorEnum keys.
-	 */
-	public static keys() :string[]{
-		return Object.keys(SubmissionStatusEnum).filter(key => key.toUpperCase() === key);
+	constructor(state: number) {
+		if (state < 1 && state > SubmissionStatus.values.length) {
+			throw new Error(`State '${state}' out of bounds [0, ${SubmissionStatus.values.length}]`)
+		}
+		this.state = state;
 	}
 
 	/**
@@ -41,10 +42,10 @@ export class SubmissionStatus {
 	 * @param name the name to find
 	 * @return the submission status to find
 	 */
-	public static byName(name: string): SubmissionStatusEnum {
-		const matches: string[] = SubmissionStatus.keys().filter(key => (SubmissionStatusEnum[key] === name));
-		if (matches.length === 1) {
-			return SubmissionStatusEnum[matches[0]];
+	public static byName(name: string): SubmissionStatus {
+		const match: number = SubmissionStatus.values.indexOf(name);
+		if (match >= 0 && match < SubmissionStatus.values.length) {
+			return new SubmissionStatus(match);
 		} else {
 			throw new SubmissionStatusNotFoundException(name);
 		}
@@ -56,6 +57,6 @@ export class SubmissionStatus {
 	 * @return the name
 	 */
 	public getName(): string {
-		return this.name;
+		return SubmissionStatus.values[this.state];
 	}
 }

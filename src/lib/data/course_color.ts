@@ -1,25 +1,26 @@
+
 /**
  * The color of a course.
  */
 export enum CourseColorEnum {
-	BLUE_GREY = ["blue-grey", "#607D8B"] as any,
-	BROWN = ["brown", "#795548"] as any,
-	DEEP_PURPLE = ["deep-purple", "#673AB7"] as any,
-	INDIGO = ["indigo", "#3F51B5"] as any,
-	ORANGE = ["orange", "#FF5722"] as any,
-	PINK = ["pink", "#E91E63"] as any,
-	PURPLE = ["purple", "#9C27B0"] as any,
-	RED = ["red", "#F44336"] as any,
-	TEAL = ["teal", "#009688"] as any,
+	BLUE_GREY = 0,
+	BROWN,
+	DEEP_PURPLE,
+	INDIGO,
+	ORANGE,
+	PINK,
+	PURPLE,
+	RED,
+	TEAL,
 }
 
 export class CourseColor {
-	/**
-	 * Returns list of the CourseColorEnum keys.
-	 */
-	public static keys() :string[]{
-		return Object.keys(CourseColorEnum).filter(key => key.toUpperCase() === key);
-	}
+
+	private static values :string[][] = [["blue-grey", "#607D8B"], ["brown", "#795548"],
+										 ["deep-purple", "#673AB7"], ["indigo", "#3F51B5"],
+										 ["orange", "#FF5722"], ["pink", "#E91E63"],
+										 ["purple", "#9C27B0"], ["red", "#F44336"],
+										 ["teal", "#009688"]];
 
 	/**
 	 * Finds a CourseColor given its name.
@@ -27,14 +28,12 @@ export class CourseColor {
 	 * @param name the name to find
 	 * @return the course color to find
 	 */
-	public static byName(name: string): CourseColorEnum {
-		const matching: string[] = CourseColor.keys().filter(key => CourseColorEnum[key][0] === name);
-        if (matching.length !== 1) {
-            throw Error(`Color named ${name} not found.`);
-        } else {
-            return CourseColorEnum[matching[0]];
-        }
+	public static byName(name: string): CourseColor {
+		const match: number = CourseColor.values.map(value => value[0]).indexOf(name);
+		if (match < 0 || match > CourseColor.values.length) throw new Error(`Color named '${name}' not found.`);
+        return new CourseColor(match);
 	}
+
 	private readonly color: string;
 	private readonly name: string;
 
@@ -44,9 +43,12 @@ export class CourseColor {
 	 * @param name  the name of the color
 	 * @param color the hexadecimal color
 	 */
-	constructor(name: string, color: string) {
-		this.color = color;
-		this.name = name;
+	constructor(status :number) {
+		if (status < 0 || status > CourseColor.values.length) {
+			throw new Error(`Status '${status}' is out of bounds [0, ${CourseColor.values.length}].`);
+		}
+		this.name = CourseColor.values[status][0];
+		this.color = CourseColor.values[status][1];
 	}
 
 	/**
