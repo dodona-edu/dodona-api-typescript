@@ -30,8 +30,8 @@ export class SubmissionStatus {
 	 * @param state the state of the status
 	 */
 	constructor(state: number) {
-		if (state < 1 && state > SubmissionStatus.values.length) {
-			throw new Error(`State '${state}' out of bounds [0, ${SubmissionStatus.values.length}]`)
+		if (state < 0 || state > SubmissionStatus.values.length) {
+			throw new Error(`State '${state}' out of bounds [0, ${SubmissionStatus.values.length}]`);
 		}
 		this.state = state;
 	}
