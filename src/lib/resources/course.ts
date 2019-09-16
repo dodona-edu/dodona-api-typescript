@@ -43,8 +43,8 @@ export class Course {
 	}
 
 	public compareTo(o: Course): number {
-		const compareYear: number = compare<string>(this.year.toLowerCase(), o.getYear().toLowerCase());
-		return compareYear;
+		const compareYear: number = compare<string>(this.year, o.getYear());
+		return compareYear != 0 ? compareYear : compare(this.getName().toLowerCase(), o.getName().toLowerCase());;
 	}
 
 	public getColor(): CourseColor {
