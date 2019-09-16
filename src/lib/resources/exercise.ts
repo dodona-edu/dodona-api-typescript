@@ -47,8 +47,8 @@ export class Exercise implements Resource{
 	            id: number,
 	            last_solution_is_best: boolean,
 	            name: string,
-             programming_language: ProgrammingLanguage,
-             url: string) {
+				programming_language: ProgrammingLanguage,
+				url: string) {
 		this.boilerplate = boilerplate;
 		this.description = description;
 		this.description_format = description_format;
@@ -110,7 +110,7 @@ export class Exercise implements Resource{
 	}
 
 	public toString(): string {
-		return `Exercise{id=${this.id}, name=${this.name}, status=${this.status}}]`;
+		return `Exercise{id=${this.id}, name=${this.name}, status=${this.status}}`;
 	}
 
 	/**
@@ -132,10 +132,10 @@ export class Exercise implements Resource{
 		return new Exercise(json.boilerplate ? json.boilerplate : "", 
 							json.description,
 							json.description_format,
-							json.has_correct_solution === "true",
-							json.has_solution === "true",
+							json.has_correct_solution,
+							json.has_solution,
 							json.id,
-							json.last_solution_is_best === "true",
+							json.last_solution_is_best,
 							json.name,
 							ProgrammingLanguage.fromJson(json.programming_language),
 							json.url
@@ -151,10 +151,10 @@ export interface ExerciseJSON{
 	boilerplate :string|null; 
 	description :string;
 	description_format :string;
-	has_correct_solution :string;
-	has_solution :string;
+	has_correct_solution :boolean;
+	has_solution :boolean;
 	id :number;
-	last_solution_is_best :string;
+	last_solution_is_best :boolean;
 	name :string;
 	programming_language :ProgrammingLanguageJSON;
 	url :string;
