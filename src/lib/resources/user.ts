@@ -81,9 +81,10 @@ export class User implements Resource{
 		return this.url.replace(".json", "");
 	}
 
-	public tostring(): string {
+	public toString(): string {
 		return `User{id=${this.id}, firstName=${this.firstName}, lastName=${this.lastName}}`;
 	}
+
 	static fromJSON(json: UserJSON|string): User {
 		if (typeof json === "string"){
 			return JSON.parse(json, User.reviver);
@@ -100,7 +101,7 @@ export class User implements Resource{
 	}
 
 	static reviver(key: string, value: any): any {
-		return key === "user" ? User.fromJSON(value) : value;
+		return key === "" ? User.fromJSON(value) : value;
 	}
 }
 
