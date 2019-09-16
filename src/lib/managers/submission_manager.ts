@@ -40,10 +40,14 @@ export class SubmissionManager extends AbstractManager{
 						 seriesId :number,
 						 exerciseId :number,
 						 solution :string) :Promise<number> {
-		let body :string = JSON.stringify({"course_id": courseId,
-										   "exercise_id": exerciseId,
-										   "series_id": seriesId,
-										   "code": solution})
+		let submission = {"submission":	{
+								"course_id": courseId,
+								"exercise_id": exerciseId,
+								"series_id": seriesId,
+								"code": solution
+							}
+						};
+		let body :string = JSON.stringify(submission);
 		console.log(body)
 		let url :string = this.url("/submissions");
 		let json = await this.post(url, body); // .then(resp => resp.json());

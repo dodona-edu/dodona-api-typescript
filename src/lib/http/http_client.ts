@@ -57,8 +57,8 @@ export class HttpClient {
 		let resp = await fetch(url, {
 			method: "post",
 			headers: {
+				"Accept": this.CONTENT_TYPE_VALUE,
 				"Content-type": this.CONTENT_TYPE_VALUE,
-				"User-Agent": this.userAgent,
 				"Authorization": this.authentication
         	},
         	body: body, // body data type must match "Content-Type" header
