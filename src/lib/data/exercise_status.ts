@@ -27,7 +27,6 @@ export class ExerciseStatus {
 	 */
 
 	private state :number;
-	
 	private static readonly values :(boolean|null)[][] = [[true, true, true], [true, true, false], [false, true, null], [null, false, null]] ;
 	private static readonly keys :string[] = ["CORRECT", "HAS_BEEN_CORRECT", "INCORRECT", "NOT_ATTEMPTED"];
 	
