@@ -91,15 +91,15 @@ export class Submission implements Resource {
 		return this.accepted;
 	}
 
-	public tostring(): string {
-		return `Submission{${this.id}, ${this.status}}`;
+	public toString(): string {
+		return `Submission{${this.id}, ${this.status.getName()}}`;
 	}
 
 	static fromJSON(json: SubmissionJSON|string) :Submission {
 		if (typeof json === "string"){
 			return JSON.parse(json, Submission.reviver);
 		}
-		return new Submission(json.accepted === "true", 
+		return new Submission(json.accepted, 
 							  json.code,
 							  json.course,
 							  new Date(json.created_at),
@@ -117,7 +117,7 @@ export class Submission implements Resource {
 }
 
 export interface SubmissionJSON{
-	accepted: string;
+	accepted: boolean;
 	code: string;
 	course: string;
 	created_at: string;
