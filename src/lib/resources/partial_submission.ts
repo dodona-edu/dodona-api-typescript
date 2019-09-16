@@ -78,14 +78,14 @@ export class PartialSubmission {
 	}
 	
 	public toString() :string {
-		return `Submission{id=${this.id}, status=${this.status}}`;
+		return `Submission{id=${this.id}, status=${this.status.getName()}}`;
 	}
 
 	static fromJSON(json: PartialSubmissionJSON|string) :PartialSubmission {
 		if (typeof json === "string"){
 			return JSON.parse(json, PartialSubmission.reviver);
 		}
-		return new PartialSubmission(json.accepted === "true", 
+		return new PartialSubmission(json.accepted, 
 							         json.course,
 							         new Date(json.created_at),
 							         json.exercise,
@@ -102,7 +102,7 @@ export class PartialSubmission {
 }
 
 export interface PartialSubmissionJSON{
-	accepted: string;
+	accepted: boolean;
 	course: string;
 	created_at: string;
 	exercise: string;
