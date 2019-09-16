@@ -43,12 +43,12 @@ export class CourseColor {
 	 * @param name  the name of the color
 	 * @param color the hexadecimal color
 	 */
-	constructor(status :number) {
-		if (status < 0 || status > CourseColor.values.length) {
-			throw new Error(`Status '${status}' is out of bounds [0, ${CourseColor.values.length}].`);
+	constructor(state :number) {
+		if (state < 0 || state > CourseColor.values.length) {
+			throw new Error(`State '${state}' out of bounds [0, ${CourseColor.values.length}]`);
 		}
-		this.name = CourseColor.values[status][0];
-		this.color = CourseColor.values[status][1];
+		this.name = CourseColor.values[state][0];
+		this.color = CourseColor.values[state][1];
 	}
 
 	/**
