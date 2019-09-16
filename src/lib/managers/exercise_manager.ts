@@ -27,7 +27,7 @@ export class ExerciseManager extends AbstractManager {
 
 	public getExcerciseOfCourse(courseId :number, exerciseId :number): Promise<Exercise> {
 		let result = this.parseExcercise(this.get(this.url(`/courses/${courseId}/exercises/${exerciseId}`)));
-		return result; // In case the return value isn't an Array.
+		return result;
 	}
 
 	public getExcercise(exerciseId :number): Promise<Exercise> {

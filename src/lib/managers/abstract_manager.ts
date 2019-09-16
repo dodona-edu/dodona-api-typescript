@@ -45,7 +45,7 @@ export abstract class AbstractManager {
 		return this.host + endpoint;
 	}
 
-	post(url :string, request :any){
+	post(url :string, request :string){
 		return this.http.post(url, request);
 	}
 }

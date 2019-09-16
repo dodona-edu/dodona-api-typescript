@@ -7,7 +7,7 @@ import { User } from "../resources/user";
 import { HttpClient } from "../http/http_client";
 import { SubmissionAccessDeniedException } from "../exceptions/accessdenied/submission_access_denied_exception";
 import { SubmissionNotFoundException } from "../exceptions/notfound/submission_not_found_exception";
-import { PartialSubmission } from "../resources/partial_submission";
+import { PartialSubmission, PartialSubmissionJSON } from "../resources/partial_submission";
 
 /**
  * Implementation of SubmissionManager.
@@ -40,13 +40,14 @@ export class SubmissionManager extends AbstractManager{
 						 seriesId :number,
 						 exerciseId :number,
 						 solution :string) :Promise<number> {
-		let request :any = JSON.stringify({"course_id": courseId,
+		let body :string = JSON.stringify({"course_id": courseId,
 										   "exercise_id": exerciseId,
 										   "series_id": seriesId,
 										   "code": solution})
-		
+		console.log(body)
 		let url :string = this.url("/submissions");
-		return await this.post(url, request).then(resp => resp.status);
+		let json = await this.post(url, body); // .then(resp => resp.json());
+		return json.status;
 	}
 	
 	public getById(id :number) :Promise<Submission> {
@@ -80,8 +81,7 @@ export class SubmissionManager extends AbstractManager{
 		return resp_promise.then( resp => {
 			return resp.json();
 		}).then(json => {
-			let result = JSON.parse(json, Submission.reviver);
-			return result[0] || result
+			return Submission.fromJSON(json);
 		});
 	}
 
@@ -89,8 +89,7 @@ export class SubmissionManager extends AbstractManager{
 		return resp_promise.then( resp => {
 			return resp.json();
 		}).then(json => {
-			let result = JSON.parse(json, PartialSubmission.reviver);
-			return result[0] ? result : [result];
+			return json.map((partial :PartialSubmissionJSON) => PartialSubmission.fromJSON(partial));
 		});
 	}
 }

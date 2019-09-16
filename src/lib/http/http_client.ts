@@ -53,18 +53,19 @@ export class HttpClient {
 		return this.handleresp(resp);
 	}
 
-	public async post(url: string, body: any): Promise<Response> {
-		return fetch(url, {
-			method: "POST",
-			credentials: "same-origin",
+	public async post(url: string, body: string): Promise<Response> {
+		let resp = await fetch(url, {
+			method: "post",
 			headers: {
-				"Accept": this.CONTENT_TYPE_VALUE,
+				"Content-type": this.CONTENT_TYPE_VALUE,
 				"User-Agent": this.userAgent,
 				"Authorization": this.authentication
         	},
-        	body: JSON.stringify(body), // body data type must match "Content-Type" header
+        	body: body, // body data type must match "Content-Type" header
 
 		});
+		this.handleresp(resp);
+		return resp;
 }
 
 	public setUserAgent(userAgent: string): HttpClient {
