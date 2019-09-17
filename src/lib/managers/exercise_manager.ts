@@ -6,6 +6,7 @@ import { AbstractManager } from "./abstract_manager";
 import { Series } from "../resources/series";
 import { PartialSubmission } from "../resources/partial_submission";
 import { Course } from "../resources/course";
+import { Response } from "node-fetch";
 
 /**
  * Implementation of ExerciseManager.
@@ -37,11 +38,11 @@ export class ExerciseManager extends AbstractManager {
 
 	public getFromPartialSubmission(submission :PartialSubmission): Promise<Exercise> {
 		let exerciseId :number|null = Exercise.getId(submission.getExerciseUrl())
-		if (exerciseId === null) throw new Error(`No excerciseId from partial submission: \n${submission}`);
-		let submission_url :string|null = submission.getCourseUrl();
+		if (exerciseId === null) throw new ExerciseNotFoundException(submission.getExerciseUrl());
+		let course_url :string = submission.getCourseUrl();
 		
-		if (submission_url !== null){
-			let courseId :number|null = Course.getId(submission_url);
+		if (course_url !== ""){
+			let courseId :number|null = Course.getId(course_url);
 			if (courseId !== null) return this.getExcerciseOfCourse(courseId, exerciseId);
 		}
 		return this.getExcercise(exerciseId);
