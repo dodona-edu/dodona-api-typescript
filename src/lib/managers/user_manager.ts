@@ -3,6 +3,7 @@ import { User } from "../resources/user";
 import { HttpClient } from "../http/http_client";
 import { UserAccessDeniedException } from "../exceptions/accessdenied/user_access_denied_exception";
 import { UserNotFoundException } from "../exceptions/notfound/user_not_found_exception";
+import { Response } from "node-fetch";
 
 /**
  * Implementation of UserManager.
@@ -26,7 +27,7 @@ export class UserManager extends AbstractManager {
 		return resp_promise.then( resp => {
 			return resp.json();
 		}).then(json => {
-			return JSON.parse(json, User.reviver);
+			return User.fromJSON(json);
 		});
 	}
 }
