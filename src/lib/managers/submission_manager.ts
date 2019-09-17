@@ -8,6 +8,7 @@ import { HttpClient } from "../http/http_client";
 import { SubmissionAccessDeniedException } from "../exceptions/accessdenied/submission_access_denied_exception";
 import { SubmissionNotFoundException } from "../exceptions/notfound/submission_not_found_exception";
 import { PartialSubmission, PartialSubmissionJSON } from "../resources/partial_submission";
+import { Response } from "node-fetch";
 
 /**
  * Implementation of SubmissionManager.
@@ -37,9 +38,9 @@ export class SubmissionManager extends AbstractManager{
 	}
 	
 	public async createWithIds(courseId :number,
-						 seriesId :number,
-						 exerciseId :number,
-						 solution :string) :Promise<number> {
+							   seriesId :number,
+							   exerciseId :number,
+							   solution :string) :Promise<number> {
 		let submission = {"submission":	{
 								"course_id": courseId,
 								"exercise_id": exerciseId,
@@ -48,35 +49,35 @@ export class SubmissionManager extends AbstractManager{
 							}
 						};
 		let body :string = JSON.stringify(submission);
-		console.log(body)
 		let url :string = this.url("/submissions");
-		let json = await this.post(url, body); // .then(resp => resp.json());
-		return json.status;
+		let resp = await this.post(url, body); // .then(resp => resp.json());
+		let json = await resp.json();
+		return json.id;
 	}
 	
-	public getById(id :number) :Promise<Submission> {
-		return this.parseSub(this.get(this.url(`/submissions/${id}`)));
+	public getById(submissionId :number) :Promise<Submission> {
+		return this.parseSub(this.get(this.url(`/submissions/${submissionId}`)));
 	}
 	
 	public getByPartialSub(partial :PartialSubmission) :Promise<Submission> {
 		return this.parseSub(this.get(partial.getUrl()));
 	}
 	
-	public getAll(user :User) :Promise<PartialSubmission[]> {
+	public getAllByUser(user :User) :Promise<PartialSubmission[]> {
 		return this.parsePartials(this.get(user.getSubmissionsUrl()));
 	}
 	
-	public getAllByMe(exercise :Exercise) :Promise<PartialSubmission[]> {
-		return this.getAllByMeWithId(exercise.getId());
+	public getAllByExercise(exercise :Exercise) :Promise<PartialSubmission[]> {
+		return this.getAllByMeExerciseId(exercise.getId());
 	}
 	
 	
-	public getAllByMeWithIds(courseId :number, exerciseId :number) :Promise<PartialSubmission[]> {
+	public getAllByMeCourseAndExerciseId(courseId :number, exerciseId :number) :Promise<PartialSubmission[]> {
 		let endpoint :string = `${this.user.getSubmissionsUrl()}?course_id=${courseId}&exercise_id=${exerciseId}`;
 		return this.parsePartials(this.get(endpoint));
 	}
 
-	public getAllByMeWithId(exerciseId :number) :Promise<PartialSubmission[]> {
+	public getAllByMeExerciseId(exerciseId :number) :Promise<PartialSubmission[]> {
 		let endpoint :string = `${this.user.getSubmissionsUrl()}?exercise_id=${exerciseId}`;
 		return this.parsePartials(this.get(endpoint));
 	}
