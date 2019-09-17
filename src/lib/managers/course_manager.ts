@@ -4,6 +4,7 @@ import { HttpClient } from "../http/http_client";
 import { CourseAccessDeniedException } from "../exceptions/accessdenied/course_access_denied_exception";
 import { CourseNotFoundException } from "../exceptions/notfound/course_not_found_exception";
 import { PartialSubmission } from "../resources/partial_submission";
+import { Response } from "node-fetch";
 
 /**
  * Implementation of CourseManager.
