@@ -26,8 +26,7 @@ export class CourseManager extends AbstractManager {
 	}
 	
 	public getPartialSubmissionCourse(submission :PartialSubmission) :Promise<Course> {
-		let submission_url :string|null = submission.getCourseUrl();
-		if (submission_url === null) throw new Error (`No Course url from partialsumbission:\n${submission}`);
+		let submission_url :string = submission.getCourseUrl();
 		return this.parse(this.get(submission_url));
 	}
 

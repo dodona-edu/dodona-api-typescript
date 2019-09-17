@@ -1,11 +1,11 @@
-import { HttpClient } from "../../lib/http/http_client"
-import { CourseManager } from "../../lib/managers/course_manager";
-import { Course } from "../../lib/resources/course";
-
 jest.mock('node-fetch');
 
 import fetch from 'node-fetch';
 import { PartialSubmission } from "../../lib/resources/partial_submission";
+import { CourseNotFoundException } from "../../lib/exceptions/notfound/course_not_found_exception";
+import { HttpClient } from "../../lib/http/http_client"
+import { CourseManager } from "../../lib/managers/course_manager";
+import { Course } from "../../lib/resources/course";
 
 const {Response} = jest.requireActual('node-fetch');
 
@@ -21,22 +21,11 @@ describe("Tests UserManager.", () => {
 		expect(course).toStrictEqual(Course.fromJSON(json));
 	})
 
-	it("Test CourseManager.getCourse(:number).", async () => {
+	it("Test CourseManager.getPartialSubmissionCourse(:number).", async () => {
 		let partialsub_json = {"created_at":"2019-09-13T09:30:20.000+02:00","status":"correct","summary":null,"accepted":true,"id":1547,"url":"http://localhost:3000/nl/submissions/1547.json","user":"http://localhost:3000/nl/users/199.json","exercise":"http://localhost:3000/nl/exercises/1677102205.json","course":"http://localhost:3000/nl/courses/5.json"};
 		fetch.mockResolvedValue(new Response(JSON.stringify(json), {status: 200}));// {json: JSON.stringify(json), status: 200}
 		let course = await course_manager.getPartialSubmissionCourse(PartialSubmission.fromJSON(partialsub_json));
 		expect(course).toBeTruthy();
 		expect(course).toStrictEqual(Course.fromJSON(json));
-	})
-
-	it("Test CourseManager.getCourse(:number).", async () => {
-		let partialsub_json = {"created_at":"2019-09-13T09:30:20.000+02:00","status":"correct","summary":null,"accepted":true,"id":1547,"url":"http://localhost:3000/nl/submissions/1547.json","user":"http://localhost:3000/nl/users/199.json","exercise":"http://localhost:3000/nl/exercises/1677102205.json","course":null};
-		fetch.mockResolvedValue(new Response(JSON.stringify(json), {status: 200}));// {json: JSON.stringify(json), status: 200}
-		let partial_submission = PartialSubmission.fromJSON(partialsub_json)
-		try {
-			let course = await course_manager.getPartialSubmissionCourse(partial_submission);	
-		} catch (error) {
-			expect(error).toStrictEqual(new Error (`No Course url from partialsumbission:\n${partial_submission}`))
-		}
 	})
 })

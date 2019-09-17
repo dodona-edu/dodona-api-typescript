@@ -45,7 +45,7 @@ export class PartialSubmission {
 		this.url = url;
 	}
 	
-	public getCourseUrl() :string|null {
+	public getCourseUrl() :string {
 		return this.courseUrl;
 	}
 	
@@ -86,13 +86,13 @@ export class PartialSubmission {
 			return JSON.parse(json, PartialSubmission.reviver);
 		}
 		return new PartialSubmission(json.accepted, 
-							         json.course,
+							         json.course ? json.course : "",
 							         new Date(json.created_at),
-							         json.exercise,
+							         json.exercise ? json.exercise : "",
 							         json.id,
 							         SubmissionStatus.byName(json.status),
 							         json.summary,
-							         json.url,
+							         json.url ? json.url : ""
 									);
 	}
 
