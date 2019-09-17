@@ -1,6 +1,7 @@
 import { HttpClient } from "../http/http_client";
 import { ResourceAccessDeniedException } from "../exceptions/accessdenied/resource_access_denied_exception";
 import { ResourceNotFoundException } from "../exceptions/notfound/resource_not_found_exception";
+import { Response } from "node-fetch";
 
 /**
  * Abstract implementation of a ResourceManager.
