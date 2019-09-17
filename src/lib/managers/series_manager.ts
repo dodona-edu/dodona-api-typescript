@@ -4,6 +4,7 @@ import { HttpClient } from "../http/http_client";
 import { SeriesAccessDeniedException } from "../exceptions/accessdenied/series_access_denied_exception";
 import { SeriesNotFoundException } from "../exceptions/notfound/series_not_found_exception";
 import { Course } from "../resources/course";
+import { Response } from "node-fetch";
 
 /**
  * Implementation of SeriesManager.
