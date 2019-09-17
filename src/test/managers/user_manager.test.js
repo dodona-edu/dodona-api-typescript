@@ -1,10 +1,9 @@
-import { HttpClient } from "../../lib/http/http_client"
-import { UserManager } from "../../lib/managers/user_manager";
-import { User } from "../../lib/resources/user";
-
 jest.mock('node-fetch');
 
 import fetch from 'node-fetch';
+import { HttpClient } from "../../lib/http/http_client"
+import { UserManager } from "../../lib/managers/user_manager";
+import { User } from "../../lib/resources/user";
 
 const {Response} = jest.requireActual('node-fetch');
 
@@ -14,7 +13,7 @@ describe("Tests UserManager.", () => {
 	let user_manager = new UserManager("http://localhost:3000", client);
 
 	it("Test UserManager.getById(:number).", async () => {
-		fetch.mockResolvedValue(new Response(JSON.stringify(json), {status: 200}));// {json: JSON.stringify(json), status: 200}
+		fetch.mockResolvedValue(new Response(JSON.stringify(json), {status: 200}));
 		let user = await user_manager.getById(199);
 		expect(user).toBeTruthy();
 		expect(user).toStrictEqual(User.fromJSON(json));
