@@ -1,18 +1,17 @@
 import { CourseColor } from "../data/course_color";
 import { compare } from "../helperfunctions";
+import { Resource } from "./resource";
 
 /**
  * A course on Dodona.
  */
-export class Course {
+export class Course extends Resource{
 	private readonly color: CourseColor;
-	private readonly id: number;
 	private readonly name: string;
 	private readonly seriesUrl: string;
 
 	private readonly teacher: string;
 
-	private readonly url: string;
 	private readonly year: string;
 
 	/**
@@ -33,12 +32,11 @@ export class Course {
 				teacher: string,
 				url: string,
 	            year: string) {
+		super(id, url);
 		this.color = color;
-		this.id = id;
 		this.name = name;
 		this.seriesUrl = seriesUrl;
 		this.teacher = teacher;
-		this.url = url;
 		this.year = year;
 	}
 
@@ -49,10 +47,6 @@ export class Course {
 
 	public getColor(): CourseColor {
 		return this.color;
-	}
-
-	public getId(): number {
-		return this.id;
 	}
 
 	public getName(): string {

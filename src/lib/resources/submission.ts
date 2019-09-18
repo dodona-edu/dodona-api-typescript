@@ -5,7 +5,7 @@ import { SubmissionStatus } from "../data/submission_status";
 /**
  * A submission on Dodona.
  */
-export class Submission implements Resource {
+export class Submission extends Resource {
 	private readonly accepted: boolean;
 	private readonly code: string;
 	private readonly createdAt: Date;
@@ -13,11 +13,9 @@ export class Submission implements Resource {
 	private readonly courseUrl: string;
 
 	private readonly exerciseUrl: string;
-	private readonly id: number;
 	private readonly status: SubmissionStatus;
 	private readonly summary: string;
-	private readonly url: string;
-
+	
 	/**
 	 * SubmissionImpl constructor.
 	 *
@@ -40,15 +38,14 @@ export class Submission implements Resource {
 					   status: SubmissionStatus,
 					   summary: string,
 					   url: string) {
+		super(id, url);
 		this.accepted = accepted;
 		this.code = code;
 		this.courseUrl = course;
 		this.createdAt = createdAt;
 		this.exerciseUrl = exercise;
-		this.id = id;
 		this.status = status;
 		this.summary = summary;
-		this.url = url;
 	}
 
 	public compareTo(o: Submission): number {
@@ -70,11 +67,7 @@ export class Submission implements Resource {
 	public getExerciseUrl(): string {
 		return this.exerciseUrl;
 	}
-
-	public getId(): number {
-		return this.id;
-	}
-
+	
 	public getStatus(): SubmissionStatus {
 		return this.status;
 	}

@@ -1,15 +1,15 @@
+import { Resource } from "./resource";
+
 /**
  * A series on Dodona.
  */
-export class Series {
+export class Series extends Resource{
 	private readonly deadline: Date;
 
 	private readonly description: string;
 	private readonly exercisesUrl: string;
-	private readonly id: number;
 	private readonly name: string;
 	private readonly order: number;
-	private readonly url: string;
 
 	/**
 	 * SeriesImpl constructor.
@@ -29,13 +29,12 @@ export class Series {
 	            name: string,
 	            order: number,
 	            url: string) {
+		super(id, url);
 		this.deadline = deadline;
 		this.description = description;
 		this.exercisesUrl = exercisesUrl;
-		this.id = id;
 		this.name = name;
 		this.order = order;
-		this.url = url;
 	}
 
 	public compareTo(o: Series): number {
@@ -52,10 +51,6 @@ export class Series {
 
     public getExercisesUrl(): string {
 		return this.exercisesUrl;
-	}
-
-	public getId(): number {
-		return this.id;
 	}
 
 	public getName(): string {

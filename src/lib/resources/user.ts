@@ -4,15 +4,13 @@ import { Resource } from "./resource";
 /**
  * A user on Dodona.
  */
-export class User implements Resource{
+export class User extends Resource{
 	private readonly correctExercises: number;
 	private readonly firstName: string;
-	private readonly id: number;
 	private readonly lastName: string;
 	private readonly submissionCount: number;
 	private readonly submissionsUrl: string;
 	private readonly subscribedCourses: Course[];
-	private readonly url: string;
 
 	/**
 	 * UserImpl constructor.
@@ -34,14 +32,13 @@ export class User implements Resource{
 	            submissionsUrl: string,
 	            subscribedCourses: Course[],
 	            url: string) {
+		super(id, url)
 		this.correctExercises = correctExercises;
 		this.firstName = firstName;
-		this.id = id;
 		this.lastName = lastName;
 		this.submissionCount = submissionCount;
 		this.submissionsUrl = submissionsUrl;
 		this.subscribedCourses = subscribedCourses;
-		this.url = url;
 	}
 
 	public compareTo(o: User): number {
@@ -55,10 +52,6 @@ export class User implements Resource{
 
 	public getFirstName(): string {
 		return this.firstName;
-	}
-
-    public getId(): number {
-		return this.id;
 	}
 
 	public getLastName(): string {
@@ -82,7 +75,7 @@ export class User implements Resource{
 	}
 
 	public toString(): string {
-		return `User{id=${this.id}, firstName=${this.firstName}, lastName=${this.lastName}}`;
+		return `User{id=${this.getId()}, firstName=${this.firstName}, lastName=${this.lastName}}`;
 	}
 
 	static fromJSON(json: UserJSON|string): User {

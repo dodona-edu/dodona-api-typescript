@@ -4,7 +4,7 @@ import { ExerciseManager } from "./managers/exercise_manager";
 import { SeriesManager } from "./managers/series_manager";
 import { SubmissionManager } from "./managers/submission_manager";
 import { UserManager } from "./managers/user_manager";
-import { User } from "./resources/user";
+import { User, UserJSON } from "./resources/user";
 
 /**
  * Implementation of DodonaClient.
@@ -40,10 +40,8 @@ export class DodonaClient  {
 		return this.exercises;
 	}
 	public static async getDodonaClient(host :string, http :HttpClient) : Promise<DodonaClient>{
-		let user :User = await http.get(host).then(resp => resp.json())
-											 .then(json => {
-												 return User.fromJSON(json.user);
-												});
+		let json :UserJSON = await http.get(host).then(resp => resp.json());
+		let user :User = await User.fromJSON(json);
 		return new DodonaClient(host, http, user);
 	}
 	
@@ -61,5 +59,14 @@ export class DodonaClient  {
 	
 	public getUsers() :UserManager {
 		return this.users;
+	}
+
+	public Equals(other :DodonaClient){
+		return this.users.Equals(other.getUsers()) &&
+			   this.me.Equals(other.getMe()) &&
+			   this.submissions.Equals(other.getSubmissions()) &&
+			   this.series.Equals(other.getSeries()) &&
+			   this.courses.Equals(other.getCourses()) &&
+			   this.exercises.Equals(other.getExercises());
 	}
 }

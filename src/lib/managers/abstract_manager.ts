@@ -49,4 +49,8 @@ export abstract class AbstractManager {
 	post(url :string, request :string){
 		return this.http.post(url, request);
 	}
+
+	Equals(other :AbstractManager) :boolean{
+		return this.host === other.host && this.http.Equals(other.http);
+	}
 }

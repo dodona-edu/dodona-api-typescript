@@ -1,13 +1,12 @@
 import {Resource} from "./resource";
 
-export class ProgrammingLanguage implements Resource {
+export class ProgrammingLanguage extends Resource {
 
-    public id: number;
     public name: string;
     public extension: string;
 
     constructor(id: number, name: string, extension: string) {
-        this.id = id;
+        super(id, `https://dodona.ugent.be/en/programming_languages/${id}.json`);
         this.name = name;
         this.extension = extension;
     }
@@ -21,14 +20,6 @@ export class ProgrammingLanguage implements Resource {
     
     static reviver(key :string, value :any) :any{
         return key === "" ? ProgrammingLanguage.fromJson(value) : value;
-    }
-
-    public getId(): number {
-        return this.id;
-    }
-
-    public getUrl(): string {
-		return `https://dodona.ugent.be/en/programming_languages/${this.id}.json`;
     }
 
     public toString(): string {
