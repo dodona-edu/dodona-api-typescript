@@ -19,9 +19,7 @@ describe("Tests SubmissionManager.", () => {
 	let user = User.fromJSON(user_json)
 	let submission_manager = new SubmissionManager("http://localhost:3000", client, user);
 
-	beforeEach( () => {
-		fetch.mockClear();
-	})
+	beforeEach( () => fetch.mockClear());
 
 	it("Test SubmissionManager.createWithIds(:number, :number, :number, :string).", async () => {
 		let resp = {status: 'ok',id: 2213,exercise_id: 1677102205,course_id: 5,url: 'http://localhost:3000/nl/submissions/2213.json'};

@@ -59,4 +59,18 @@ describe("Tests PartialSubmission", () => {
     test("Test PartialSubmission.fromJSON(:string).", () => {
         expect(PartialSubmission.fromJSON(JSON.stringify(json))).toStrictEqual(partial_submission);
     })
+
+    test("Test PartialSubmission.fromJSON(:string) were json has no url.", () => {
+        let json_without_url = {"created_at":"2019-09-16T11:18:18.000+02:00","status":"memory limit exceeded","summary":"Geheugenlimiet overschreden","accepted":false,"id":980296,"url":null,"user":"https://naos.ugent.be/nl/users/581.json","exercise":"https://naos.ugent.be/nl/exercises/338560084.json","course":"https://naos.ugent.be/nl/courses/1.json"};
+        let expected_partial_sub = new  PartialSubmission(json_without_url.accepted,
+                                                          json_without_url.course,
+                                                          new Date(json_without_url.created_at),
+                                                          json_without_url.exercise,
+                                                          json_without_url.id,
+                                                          SubmissionStatus.byName(json_without_url.status),
+                                                          json_without_url.summary,
+                                                          ""
+                                                          );
+        expect(PartialSubmission.fromJSON(JSON.stringify(json_without_url))).toStrictEqual(expected_partial_sub);
+    })
 })

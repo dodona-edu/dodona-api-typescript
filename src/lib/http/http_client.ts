@@ -71,7 +71,7 @@ export class HttpClient {
 	 * @return the response parsed as T
 	 */
 	private handleresp(response: Response): Response{
-		try {
+		try{
 			if (response.status === 401) {
 				if (this.authentication) {
 					throw AuthenticationException.invalid();
@@ -90,7 +90,11 @@ export class HttpClient {
 
 			return response;
 		} catch (error) {
-			throw new Error(error);
+			throw error;
 		}
+	}
+
+	Equals(other :HttpClient) :boolean{
+		return this.authentication === other.authentication && this.userAgent === other.userAgent;
 	}
 }
